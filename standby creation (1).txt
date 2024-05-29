@@ -1,0 +1,475 @@
+ssyt erase (press backspace key)
+1) Prerequistics: At Production
+===============================
+Bring DB in archive log mode   
+
+SQL> archive log list
+SQL> SHUTDOWN IMMEDIATE;
+SQL> STARTUP MOUNT;
+SQL> ALTER DATABASE ARCHIVELOG;
+SQL> ALTER DATABASE OPEN;
+SQL> archive log list;
+
+col FORCE_LOGGING for a20
+select LOG_MODE,FORCE_LOGGING,NAME,OPEN_MODE from v$database;
+
+
+
+LOG_MODE     FORCE_LOGGING        NAME      OPEN_MODE
+------------ -------------------- --------- ----------
+ARCHIVELOG   NO                   MBDBARCH  READ WRITE
+
+
+
+alter database FORCE LOGGING;
+
+
+select LOG_MODE,FORCE_LOGGING,NAME,OPEN_MODE from v$database;
+
+
+
+LOG_MODE     FORCE_LOGGING        NAME      OPEN_MODE
+------------ -------------------- --------- ----------
+ARCHIVELOG   YES                  MBDBARCH  READ WRITE
+
+
+
+show parameter remote_login_passwordfile  ==> it should be EXCLUSIVE
+
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+remote_login_passwordfile            string      EXCLUSIVE
+
+
+
+show parameter standby_file_management  ==> It should be AUTO
+
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+standby_file_management              string      MANUAL
+
+
+
+alter system set standby_file_management='AUTO';
+
+
+show parameter standby_file_management
+
+
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- -----
+standby_file_management              string      AUTO
+
+
+
+
+Need to configure TNS on primary and Secondary server
+==================================================================================================================
+
+cd $ORACLE_HOME/network/admin			Go to tnsnames.ora location and below mentioned entry
+
+vi tnsnames.ora
+
+===============================================================================
+Primary Server = FC means Fal client (Own server)
+	       = FS means Fal Server (Destination server)
+----------------------------------------------------------
+On Primary server
+=================
+
+
+FC_MBDBARCH =
+  (DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = 172.16.19.193)(PORT = 1522))
+    )
+    (CONNECT_DATA =
+      (SERVICE_NAME = MBDBARCH)
+    )
+  )
+
+FS_MBDBARCH =
+  (DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = 172.17.19.193)(PORT = 1522))
+    )
+    (CONNECT_DATA =
+      (SERVICE_NAME = MBDBARCH)
+    )
+  )
+
+
+
+On Secondary server
+===================
+
+
+FS_MBDBARCH =
+  (DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = 172.16.19.193)(PORT = 1522))
+    )
+    (CONNECT_DATA =
+      (SERVICE_NAME = MBDBARCH)
+    )
+  )
+
+FC_MBDBARCH =
+  (DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = 172.17.19.193)(PORT = 1522))
+    )
+    (CONNECT_DATA =
+      (SERVICE_NAME = MBDBARCH)
+    )
+  )
+
+
+
+
+=====================================================================================================================
+
+ At Production
+===============================
+
+alter system set fal_client='FC_CLIENT';
+alter system set fal_server='FS_SERVER';
+
+
+
+ At DR
+===============================
+
+alter system set fal_client='FC_CLIENT';
+alter system set fal_server='FS_SERVER';
+
+
+sho parameter service;
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ----------
+service_names                        string      MBDBARCH
+
+
+
+ At Production
+===============================
+
+alter system set log_archive_dest_2='service=TEST_FS';
+
+--alter system set log_archive_dest_2='SERVICE=FS_CSISGY reopen=60 ARCH NOAFFIRM'; (optional for BOB)
+
+alter system set log_archive_dest_state_2='ENABLE';
+
+
+
+ At DR
+===============================
+
+alter system set log_archive_dest_2='service=TEST_FS';
+
+alter system set log_archive_dest_2='DEFER';
+
+
+
+============================NOT USE IN BOB========================================
+ sho parameter config
+
+log_archive_config                   string(DB_unique_name_PR,DB_UNIQUE_NAME_DR)
+
+
+SHO PARAMETER ARCH			== To check above parameter
+
+=====================================================================================================================
+
+ At Production
+===============================
+
+Create a password file if not present
+-------------------------------------
+
+cd $ORACLE_HOME/dbs			GO TO PASSWORD FILE LOCATION
+
+First take backup of pawword file and genrate new password file for below mentioned command.
+
+
+orapwd file=$ORACLE_HOME/dbs/orapw$ORACLE_SID password=Bank_1234
+
+
+scp -Cp  orapwCSISGY CSISGY@172.16.52.91:/csisora19cGUY/csisgy/oracle19c/app/dbhome/dbs	==	COPY PASSWORD FILE TO STANDBY SERVER
+
+
+
+2) rman target /
+
+Edit properly and give path
+
+run 
+{
+allocate channel d1 type disk;
+allocate channel d2 type disk;
+allocate channel d3 type disk;
+allocate channel d4 type disk;
+allocate channel d5 type disk;
+allocate channel d6 type disk;
+allocate channel d7 type disk;
+allocate channel d8 type disk;
+allocate channel d9 type disk;
+allocate channel d10 type disk;
+backup as compressed backupset database format '/csisdataGUY/RMAN_BKP/BKP_27122021/CSISGY_DATAFILE_%d_%s_%p_%T.bkp' tag 'databkp';
+BACKUP CURRENT CONTROLFILE FOR STANDBY format '/csisdataGUY/RMAN_BKP/BKP_27122021/CSISGY_CONTROLFILE_%T.ctl' tag 'standbycontrolfilebkp';
+}
+
+Now scp the backup to standby
+
+scp -Cp * user@172.17.67.17:/findbIFSC/BOBIFSC/rman/
+
+Note : If backup location not in same location as of PRODUCTION then you need to use catlog.sql beforel restoring standby. 
+
+Normally keep same location.
+
+
+ At Standby
+===============================
+
+3.Install oracle binaries if not installed at standby
+
+4.Take backup policy at prod for all location and then change permissions accordingly at DR.
+
+
+set pages 1999
+select host_name from v$instance;
+select name,open_mode from v$database;
+col value for a50
+sho parameter spfile
+select NAME " DATA FILE "from V$datafile order by 1;
+select name " Controlfile " from V$controlfile order by 1;
+select MEMBER " LOGFILE " from v$logfile order by 1;
+select name " TEMPFILE " from v$tempfile order by 1;
+archive log list
+m kdior
+
+
+ At PRODUCTION
+===============================
+
+
+Go to SQL to check spfile and pfile is created or not
+
+
+SQL>  sho parameter pfile;
+
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+spfile                               string      /oradb/ora19cdb/oracle/home/db
+                                                 s/spfileMBDBARCH.ora
+
+
+SQL> create pfile from spfile;
+
+
+cd $ORACLE_HOME/dbs
+
+
+scp -Cp  initCSISGY.ora CSISGY@172.16.52.91:/csisora19cGUY/csisgy/oracle19c/app/dbhome/dbs		== Now copy pfile from production to standby
+
+
+
+ At STANDBY
+===============================
+
+
+cd $ORACLE_HOME/dbs
+
+vi initInstance_name.ora
+
+and then paste the pfile data taken in notepad.
+
+Following parameter are IMP : 
+
+*.archive_lag_target=7200 --> should be 7200
+*.log_archive_dest_state_2='DEFER' --> should be deferred
+*.db_recovery_file_dest_size=1g --> remove
+*.db_recovery_file_dest='' --> remove
+*.log_archive_dest_n='' --> remove other than 1 and 2
+*.audit_file_dest='/cbsarchIFSC/BOBIFSC/audit'
+*.background_dump_dest='/oracle11gIFSC/ora11g/app/rdbms/log/bdump' -->change the location as needed
+*.control_files='/findbIFSC/BOBIFSC/ctl/control_01_BOBIFSC.ctl','/finredoIFSC/BOBIFSC/ctl/control_02_BOBIFSC.ctl','/finredo1IFSC/BOBIFSC/ctl/control_03_BOBIFSC.ctl'
+*.log_archive_dest_1='LOCATION=/cbsarchIFSC/BOBIFSC'
+*.standby_file_management=AUTO
+
+
+mkdir -p /findbIFSC/BOBIFSC/data/ /findbIFSC/BOBIFSC/ctl/ /finredo1IFSC/BOBIFSC/ctl/ /finredoIFSC/BOBIFSC/ctl/		== CREATE NEW CONTROL FILE IN STANDBY
+
+chown -R ifsccbs:dba /findbIFSC/BOBIFSC/ /finredo1IFSC/BOBIFSC/ /cbsarchIFSC/BOBIFSC /oracle11gIFSC/ora11g/
+
+5. At DR now restore the database using rman
+
+
+
+set 19c HOME PATH on STANDBY SERVER
+====================================
+
+df |grep GC  (ONLY SHOW GC MOUNT POINT)
+
+export ORACLE_SID=CSISGY
+export ORACLE_HOME=/csisora19cGUY/csisgy/oracle19c/app/dbhome
+export PATH=$ORACLE_HOME/bin:$PATH
+sqlplus / as sysdba
+
+startup nomount pfile='/csisora19cGUY/csisgy/oracle19c/app/dbhome/dbs/initCSISGY.ora';
+
+	OR
+
+export ORACLE_SID=MBDBARCH
+sqlplus / as sysdba
+startup nomount pfile='/oradb/ora19cdb/oracle/home/dbs/initMBDBARCH.ora';
+
+SQL> sho parameter dump
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+background_core_dump                 string      partial
+background_dump_dest                 string      /csisora19cGC/oracle19c/app/pr
+                                                 oduct/dbhome/rdbms/log
+core_dump_dest                       string      /csisora19cGC/oracle19c/app/ba
+                                                 se/diag/rdbms/csisgc/CSISGC/cd
+                                                 ump
+
+
+ cd /csisora19cGC/oracle19c/app/base/diag/rdbms/csisgc/CSISGC/cdump
+ pwd
+cd ..
+ cd trace
+ ls -lrt
+ tail -200f alert_CSISGC.log
+
+
+Open log file and check logs
+
+
+
+sho parameter pfile
+
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------
+spfile                               string
+
+
+create spfile from pfile;
+shut immediate
+
+
+SQL> ho rman target /
+
+SQL>  !rman target /
+
+RMAN>  startup nomount;
+
+
+RESTORE STANDBY CONTROLFILE FROM '/csisdataGUY/RMAN_BKP/BKP_27122021/CSISGY_CONTROLFILE_20211227.ctl';
+
+
+alter database mount;
+
+RMAN>  catalog start with '/csisdataGUY/RMAN_BKP/BKP_27122021';
+
+
+RMAN>  CROSSCHECK BACKUP;
+
+RMAN>  DELETE EXPIRED BACKUP
+
+RMAN>  LIST BACKUP
+
+RMAN>  restore database;
+
+recover database (if backup is taken online otherwise just restore)
+
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE nodelay DISCONNECT FROM SESSION;
+
+=======================================================================================================================================================================
+cd $ORACLE_HOME/network/admin
+
+Copy password file
+Copy tnsname.ora
+Copy Listener.ora  from production to standby
+
+Edit DR database listener.ora
+
+Postrequistics: At standby 
+===========================
+AT STANDBY
+==========
+
+alter system set log_archive_dest_2='SERVICE=FS_CSISGC reopen=60 ARCH NOAFFIRM';
+alter system set log_archive_dest_state_2='DEFER';
+SHO PARAMETER ARCH
+
+
+AT PRODUCTION
+=============
+
+alter system set log_archive_dest_2='SERVICE=FS_CSISAU reopen=60 ARCH NOAFFIRM';
+alter system set log_archive_dest_state_2='ENABLE';
+SHO PARAMETER ARCH
+
+
+
+select name,open_mode,database_role,controlfile_type,log_mode from v$database;
+col error for a25 
+select * from v$recover_file;
+select distinct status from v$datafile;
+select distinct status from v$backup;
+select distinct process,status from v$managed_standby;
+sho parameter arc
+
+archive log list
+
+Now check alert log at DR.
+
+
+*****************************************************************************************************
+
+At DC
+=====
+
+alter system switch logfile;
+alter system switch logfile;
+alter system switch logfile;
+archive log list
+
+
+
+<Step – 20>------------------------------OPTIONALLY--------------------------------------
+=========================================================================================
+Create standby redolog , It should be match the configuration of the primary server.
+Note: Create one additional standby redolog  on both.
+
+
+SQL> sqlplus / as sysdba
+SQL> ALTER SYSTEM SET STANDBY_FILE_MANAGEMENT='MANUAL' scope=spfile;
+SQL> ALTER DATABASE ADD STANDBY LOGFILE('/u01/app/oracle/oradata/RTS/stndby1.log') size 51M;
+SQL> ALTER DATABASE ADD STANDBY LOGFILE('/u01/app/oracle/oradata/RTS/stndby2.log') size 51M;
+SQL> ALTER DATABASE ADD STANDBY LOGFILE('/u01/app/oracle/oradata/RTS/stndby3.log') size 51M;
+SQL> ALTER DATABASE ADD STANDBY LOGFILE('/u01/app/oracle/oradata/RTS/stndby4.log') size 51M;
+SQL> ALTER SYSTEM SET STANDBY_FILE_MANAGEMENT='AUTO' scope=spfile;
+
+<Step – 21>
+=============================================================================================
+Start apply process @ DR.
+
+SQL> ALTER DATABASE RECOVER MANAGED STANDBY DATABASE nodelay DISCONNECT FROM SESSION;
+
+
+=================================================================================
+
+
+
+
+To create services on windows
+oradim -new -sid MBDBARCH -syspwd mgrmbdbarch -startmode auto -pfile E:\app\product\19c\dbhome\database\initMBDBARCH.ora;

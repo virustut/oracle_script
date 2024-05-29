@@ -1,0 +1,1433 @@
+login as: root
+root@192.168.137.3's password:
+Last login: Sun Jul 16 02:22:22 2023 from gateway
+[root@node4 ~]#
+[root@node4 ~]#
+[root@node4 ~]#
+[root@node4 ~]#
+[root@node4 ~]#
+[root@node4 ~]# su - oracle
+
+Last login: Sun Jul 16 02:22:27 EDT 2023 on pts/0
+[oracle@node4 ~]$
+[oracle@node4 ~]$
+[oracle@node4 ~]$
+[oracle@node4 ~]$
+[oracle@node4 ~]$
+[oracle@node4 ~]$
+[oracle@node4 ~]$ env |grep ORA
+ORACLE_SID=TEST
+ORACLE_HOME=/orab/app/12.2/dbhome
+[oracle@node4 ~]$
+[oracle@node4 ~]$
+[oracle@node4 ~]$
+[oracle@node4 ~]$ sqlplus / as sysdba
+
+SQL*Plus: Release 19.0.0.0.0 - Production on Sun Jul 16 02:51:05 2023
+Version 19.3.0.0.0
+
+Copyright (c) 1982, 2019, Oracle.  All rights reserved.
+
+Connected to an idle instance.
+
+SQL>
+SQL>
+SQL> startup
+ORACLE instance started.
+
+Total System Global Area 2097149856 bytes
+Fixed Size                  8898464 bytes
+Variable Size             553648128 bytes
+Database Buffers         1526726656 bytes
+Redo Buffers                7876608 bytes
+Database mounted.
+Database opened.
+SQL>
+SQL>
+SQL> select name,open_mode,controlfile_type from gv$database;
+
+NAME      OPEN_MODE            CONTROL
+--------- -------------------- -------
+TEST      READ WRITE           CURRENT
+
+SQL> !ps -ef|grep pmon
+oracle     2542      1  0 02:51 ?        00:00:00 ora_pmon_TEST
+oracle     2915   2533  0 02:54 pts/0    00:00:00 /bin/bash -c ps -ef|grep pmon
+oracle     2917   2915  0 02:54 pts/0    00:00:00 grep pmon
+
+SQL>
+SQL>
+SQL> exit
+Disconnected from Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.3.0.0.0
+
+[oracle@node4 ~]$
+[oracle@node4 ~]$
+[oracle@node4 ~]$
+[oracle@node4 ~]$
+[oracle@node4 ~]$
+[oracle@node4 ~]$ cd EXPDP/
+[oracle@node4 EXPDP]$
+[oracle@node4 EXPDP]$
+[oracle@node4 EXPDP]$ ls -lrt
+total 108
+-rw-rw-r-- 1 oracle oracle    256 Jul  9 03:57 rman.cmd
+-rw-rw---- 1 oracle oracle 102400 Jul 15 04:29 exp_test.dmp1
+-rw-rw-r-- 1 oracle oracle   1451 Jul 15 04:29 exp_test.log1
+[oracle@node4 EXPDP]$
+[oracle@node4 EXPDP]$ cat rman.cmd
+run
+{
+allocate channel c1 type disk;
+allocate channel c2 type disk;
+allocate channel c3 type disk;
+allocate channel c4 type disk;
+backup database format '/orab/app/12.2/backup/db_%u';
+backup current controlfile format '/orab/app/12.2/backup/control_%u';
+}
+[oracle@node4 EXPDP]$
+[oracle@node4 EXPDP]$
+[oracle@node4 EXPDP]$ cd /orab/app/12.2/backup/
+[oracle@node4 backup]$
+[oracle@node4 backup]$
+[oracle@node4 backup]$ ls -lrt
+total 1252440
+-rw-rw---- 1 oracle oracle  10682368 Jul 15 03:04 db_0h219oal
+-rw-rw---- 1 oracle oracle    114688 Jul 15 03:04 db_0i219oao
+-rw-rw---- 1 oracle oracle   7438336 Jul 15 03:05 db_0g219oal
+-rw-rw---- 1 oracle oracle 437936128 Jul 15 03:05 db_0f219oal
+-rw-rw---- 1 oracle oracle 815644672 Jul 15 03:05 db_0e219oal
+-rw-rw---- 1 oracle oracle  10682368 Jul 15 03:05 control_0j219obs
+[oracle@node4 backup]$ pwd
+/orab/app/12.2/backup
+[oracle@node4 backup]$
+[oracle@node4 backup]$
+[oracle@node4 backup]$
+[oracle@node4 backup]$
+[oracle@node4 backup]$ scp -pr root@192.168.137.9:/orab
+usage: scp [-12346BCpqrv] [-c cipher] [-F ssh_config] [-i identity_file]
+           [-l limit] [-o ssh_option] [-P port] [-S program]
+           [[user@]host1:]file1 ... [[user@]host2:]file2
+[oracle@node4 backup]$ scp -pr * root@192.168.137.9:/orab
+The authenticity of host '192.168.137.9 (192.168.137.9)' can't be established.
+ECDSA key fingerprint is e1:54:7d:18:b2:dd:ba:8b:5f:2a:b4:de:a6:5a:80:27.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '192.168.137.9' (ECDSA) to the list of known hosts.
+root@192.168.137.9's password:
+control_0j219obs                                                                                                                                           100%   10MB  10.2MB/s   00:00
+db_0e219oal                                                                                                                                                100%  778MB   8.6MB/s   01:31
+db_0f219oal                                                                                                                                                100%  418MB   7.2MB/s   00:58
+db_0g219oal                                                                                                                                                100% 7264KB   7.1MB/s   00:00
+db_0h219oal                                                                                                                                                100%   10MB  10.2MB/s   00:01
+db_0i219oao                                                                                                                                                100%  112KB 112.0KB/s   00:00
+[oracle@node4 backup]$ pwd
+/orab/app/12.2/backup
+[oracle@node4 backup]$
+[oracle@node4 backup]$
+[oracle@node4 backup]$
+[oracle@node4 backup]$
+[oracle@node4 backup]$ cd $ORACLE_HOME/dbs
+[oracle@node4 dbs]$
+[oracle@node4 dbs]$
+[oracle@node4 dbs]$
+[oracle@node4 dbs]$ ls -lrt
+total 20844
+-rw-r--r-- 1 oracle oracle     3079 May 14  2015 init.ora
+-rw-r----- 1 oracle oracle     2048 Jun 11 03:56 orapwTEST1
+-rw-r----- 1 oracle oracle        0 Jun 11 03:56 lkinstTEST1
+-rw-rw---- 1 oracle oracle     1544 Jun 11 03:56 hc_TEST1.dat
+-rw-r----- 1 oracle oracle       24 Jun 11 04:06 lkTEST
+-rw-r----- 1 oracle oracle     2048 Jun 11 04:08 orapwTEST
+-rw-rw---- 1 oracle oracle 10715136 Jul  9 04:20 c-2437345307-20230709-00
+-rw-rw---- 1 oracle oracle 10600448 Jul 15 03:05 snapcf_TEST.f
+-rw-r----- 1 oracle oracle     3584 Jul 16 02:52 spfileTEST.ora
+-rw-rw---- 1 oracle oracle     1544 Jul 16 02:52 hc_TEST.dat
+drwxrwxr-x 2 oracle oracle       87 Jul 16 02:52 arch
+[oracle@node4 dbs]$ strings spfileTEST.ora
+TEST.__data_transfer_cache_size=0
+TEST.__db_cache_size=1426063360
+TEST.__inmemory_ext_roarea=0
+TEST.__inmemory_ext_rwarea=0
+TEST.__java_pool_size=0
+TEST.__large_pool_size=16777216
+TEST.__oracle_base='/orab/app/oracle'#ORACLE_BASE set from environment
+TEST.__pga_aggregate_target=503316480
+TEST.__sga_target=2097152000
+TEST.__shared_io_pool_size=100663296
+TEST.__shared_pool_size=503316480
+TEST.__streams_pool_size=33554432
+TEST.__unified_pga_pool_size=0
+*.audit_file_dest='/orab/app/oracl
+e/admin/TEST/adump'
+*.audit_trail='db'
+*.compatible='19.0.0'
+*.control_files='/orab/TEST/datafiles/TEST/control01.ctl','/orab/TEST/datafiles/TEST/control02.ctl'
+*.db_block_size=8192
+*.db_name='TEST'
+*.diagnostic_dest='/orab/app/oracle'
+*.dispatchers='(PROTOCOL=TCP) (SERVICE=TESTXDB)'
+*.local_listener='(ADDRESS = (PROTOCOL = TCP)(HOST = NODE4)(PORT = 1621))'
+*.log_archive_dest_1='location=/orab/app/12.2/dbhome/dbs/arch'
+*.nls_language='AMERICAN'
+*.nls_territory='AMERICA'
+*.open_cursor
+s=300
+*.pga_aggregate_target=478m
+*.processes=100
+*.remote_login_passwordfile='EXCLUSIVE'
+*.sga_target=2000m
+*.undo_tablespace='UNDOTBS1'
+[oracle@node4 dbs]$
+[oracle@node4 dbs]$
+[oracle@node4 dbs]$ cd ..
+[oracle@node4 dbhome]$
+[oracle@node4 dbhome]$
+[oracle@node4 dbhome]$ cd ..
+[oracle@node4 12.2]$
+[oracle@node4 12.2]$
+[oracle@node4 12.2]$
+[oracle@node4 12.2]$ ls -lrt
+total 4
+drwxr-xr-x 71 oracle oracle 4096 Jun 17 02:29 dbhome
+drwxrwxr-x  2 oracle oracle  125 Jul 15 03:05 backup
+[oracle@node4 12.2]$
+[oracle@node4 12.2]$
+[oracle@node4 12.2]$
+[oracle@node4 12.2]$ cd ..
+[oracle@node4 app]$
+[oracle@node4 app]$
+[oracle@node4 app]$
+[oracle@node4 app]$ ls -lrt
+total 8
+drwxrwxrwx. 71 oracle oracle 4096 Oct 12  2020 dbhome
+-rw-rw-r--   1 oracle oracle  960 Oct 13  2020 inittestDR.ora
+drwxrwxr-x   2 oracle oracle    6 Jun 11 03:01 base
+drwxrwxr-x   7 oracle oracle   82 Jun 11 03:56 oracle
+drwxr-xr-x   4 oracle oracle   34 Jul  9 03:57 12.2
+[oracle@node4 app]$
+[oracle@node4 app]$
+[oracle@node4 app]$
+[oracle@node4 app]$
+[oracle@node4 app]$
+[oracle@node4 app]$ cd 12.2
+[oracle@node4 12.2]$
+[oracle@node4 12.2]$
+[oracle@node4 12.2]$ ls -lrt
+total 4
+drwxr-xr-x 71 oracle oracle 4096 Jun 17 02:29 dbhome
+drwxrwxr-x  2 oracle oracle  125 Jul 15 03:05 backup
+[oracle@node4 12.2]$
+[oracle@node4 12.2]$
+[oracle@node4 12.2]$
+[oracle@node4 12.2]$
+[oracle@node4 12.2]$ cd dbhome/
+[oracle@node4 dbhome]$
+[oracle@node4 dbhome]$
+[oracle@node4 dbhome]$ ls -lrt
+total 2988076
+-rw-r--r--  1 oracle oracle        852 Aug 18  2015 env.ora
+-rw-r--r--  1 oracle oracle       2927 Oct 14  2016 schagent.conf
+-rwxr-x---  1 oracle oracle       1783 Mar  8  2017 runInstaller
+drwxr-x---  7 oracle oracle         69 Apr 17  2019 xdk
+drwxr-xr-x  3 oracle oracle         19 Apr 17  2019 wwg
+drwxr-xr-x  4 oracle oracle         31 Apr 17  2019 usm
+drwxr-xr-x  5 oracle oracle         45 Apr 17  2019 suptools
+drwxr-xr-x  6 oracle oracle         54 Apr 17  2019 srvm
+drwxr-xr-x  3 oracle oracle         17 Apr 17  2019 sqlj
+drwxr-xr-x  4 oracle oracle         41 Apr 17  2019 sqldeveloper
+drwxr-xr-x  3 oracle oracle         18 Apr 17  2019 slax
+-rw-r-----  1 oracle oracle         10 Apr 17  2019 root.sh.old.3
+-rw-r-----  1 oracle oracle         10 Apr 17  2019 root.sh.old.1
+drwxr-xr-x  3 oracle oracle         21 Apr 17  2019 relnotes
+drwxr-xr-x  4 oracle oracle         29 Apr 17  2019 racg
+drwxr-xr-x  5 oracle oracle         52 Apr 17  2019 R
+drwxr-xr-x  5 oracle oracle         39 Apr 17  2019 perl
+drwxr-xr-x  4 oracle oracle         33 Apr 17  2019 owm
+drwxr-xr-x  3 oracle oracle         19 Apr 17  2019 oss
+drwxr-xr-x  6 oracle oracle         52 Apr 17  2019 ord
+drwxr-xr-x  4 oracle oracle         34 Apr 17  2019 oracore
+drwxr-xr-x  7 oracle oracle         65 Apr 17  2019 opmn
+drwxr-xr-x  5 oracle oracle         42 Apr 17  2019 olap
+drwxr-xr-x  5 oracle oracle         46 Apr 17  2019 nls
+drwxr-xr-x  4 oracle oracle         31 Apr 17  2019 mgw
+drwxr-xr-x  9 oracle oracle         98 Apr 17  2019 md
+drwxr-xr-x 10 oracle oracle        112 Apr 17  2019 ldap
+drwxr-xr-x  3 oracle oracle         18 Apr 17  2019 has
+drwxr-xr-x  3 oracle oracle         19 Apr 17  2019 dv
+drwxr-xr-x  3 oracle oracle         20 Apr 17  2019 diagnostics
+drwxr-xr-x  3 oracle oracle         20 Apr 17  2019 demo
+drwxr-xr-x  3 oracle oracle         19 Apr 17  2019 dbjava
+drwxr-xr-x  3 oracle oracle         20 Apr 17  2019 data
+drwxr-xr-x  7 oracle oracle         71 Apr 17  2019 cv
+drwxr-xr-x  3 oracle oracle         18 Apr 17  2019 css
+drwxr-xr-x  6 oracle oracle         55 Apr 17  2019 crs
+drwxr-xr-x  6 oracle oracle         78 Apr 17  2019 plsql
+drwxr-xr-x  2 oracle oracle         33 Apr 17  2019 utl
+drwxr-xr-x  2 oracle oracle         29 Apr 17  2019 instantclient
+drwxr-xr-x 13 oracle oracle        198 Apr 17  2019 dmu
+drwxr-xr-x  3 oracle oracle         35 Apr 17  2019 ucp
+drwxr-xr-x  3 oracle oracle         35 Apr 17  2019 jdbc
+drwxr-xr-x  2 oracle oracle         26 Apr 17  2019 QOpatch
+drwxr-xr-x  4 oracle oracle         66 Apr 17  2019 ords
+drwxr-xr-x  5 oracle oracle        119 Apr 17  2019 sdk
+drwxr-xr-x  6 oracle oracle       4096 Apr 17  2019 apex
+drwxr-xr-x  8 oracle oracle        101 Apr 17  2019 odbc
+drwxr-xr-x  2 oracle oracle       4096 Apr 17  2019 jlib
+drwxr-xr-x  4 oracle oracle         30 Apr 17  2019 drdaas
+drwxr-xr-x 11 oracle oracle        119 Apr 17  2019 ctx
+-rwx------  1 oracle oracle        786 Apr 17  2019 root.sh.old
+drwxr-xr-x 10 oracle oracle        106 Apr 17  2019 network
+drwxr-xr-x  5 oracle oracle         41 Apr 17  2019 hs
+drwxr-xr-x  9 oracle oracle         93 Apr 17  2019 assistants
+-rwx------  1 oracle oracle        638 Apr 18  2019 root.sh.old.2
+drwxr-xr-x  4 oracle oracle        236 Apr 18  2019 sqlpatch
+drwxr-xr-x 13 oracle oracle        140 Apr 18  2019 rdbms
+drwxr-xr-x  6 oracle oracle         56 Apr 18  2019 precomp
+drwxr-xr-x  6 oracle oracle        219 Apr 18  2019 jdk
+drwxr-xr-x  8 oracle oracle         82 Apr 18  2019 javavm
+-rwxrwxrwx  1 oracle oracle 3059705302 Sep 18  2020 LINUX.X64_193000_db_home.zip
+-rw-r-----  1 oracle oracle         48 Oct  5  2020 oraInst.loc
+drwxr-xr-x  6 oracle oracle         53 Jun 11 03:30 sqlplus
+drwxr-x--- 14 oracle oracle       4096 Jun 11 03:30 OPatch
+drwxr-xr-x  4 oracle oracle      12288 Jun 11 03:30 lib
+-rwx------  1 oracle oracle        512 Jun 11 03:30 root.sh
+drwxr-x--- 14 oracle oracle        233 Jun 11 03:30 inventory
+drwxr-xr-x  8 oracle oracle        226 Jun 11 03:30 oui
+drwxr-xr-x  5 oracle oracle        191 Jun 11 03:30 deinstall
+drwxr-xr-x  4 oracle oracle         87 Jun 11 03:30 clone
+drwxr-xr-x  2 oracle oracle        102 Jun 11 03:30 addnode
+drwxrwxr-x  4 oracle oracle         30 Jun 11 03:30 cfgtoollogs
+drwxrwx--- 10 oracle oracle       4096 Jun 11 03:32 install
+drwxr-xr-x  2 oracle oracle       8192 Jun 11 03:33 bin
+drwxr-xr-x  3 oracle oracle         18 Jun 17 02:16 admin
+drwxr-x--T  4 oracle oracle         31 Jun 18 03:35 log
+drwxr-xr-x  3 oracle oracle        216 Jul 16 02:51 dbs
+[oracle@node4 dbhome]$ cd ..
+[oracle@node4 12.2]$
+[oracle@node4 12.2]$
+[oracle@node4 12.2]$
+[oracle@node4 12.2]$
+[oracle@node4 12.2]$ scp -pr dbhome root@192.168.137.9:/orab/app^C
+[oracle@node4 12.2]$
+[oracle@node4 12.2]$
+[oracle@node4 12.2]$
+[oracle@node4 12.2]$ du -sh dbhome
+10G     dbhome
+[oracle@node4 12.2]$
+[oracle@node4 12.2]$
+[oracle@node4 12.2]$
+[oracle@node4 12.2]$ env |grep ORA
+ORACLE_SID=TEST
+ORACLE_HOME=/orab/app/12.2/dbhome
+[oracle@node4 12.2]$ pwd
+/orab/app/12.2
+[oracle@node4 12.2]$ cd dbhome/
+[oracle@node4 dbhome]$
+[oracle@node4 dbhome]$
+[oracle@node4 dbhome]$
+[oracle@node4 dbhome]$ ls -lrt
+total 2988076
+-rw-r--r--  1 oracle oracle        852 Aug 18  2015 env.ora
+-rw-r--r--  1 oracle oracle       2927 Oct 14  2016 schagent.conf
+-rwxr-x---  1 oracle oracle       1783 Mar  8  2017 runInstaller
+drwxr-x---  7 oracle oracle         69 Apr 17  2019 xdk
+drwxr-xr-x  3 oracle oracle         19 Apr 17  2019 wwg
+drwxr-xr-x  4 oracle oracle         31 Apr 17  2019 usm
+drwxr-xr-x  5 oracle oracle         45 Apr 17  2019 suptools
+drwxr-xr-x  6 oracle oracle         54 Apr 17  2019 srvm
+drwxr-xr-x  3 oracle oracle         17 Apr 17  2019 sqlj
+drwxr-xr-x  4 oracle oracle         41 Apr 17  2019 sqldeveloper
+drwxr-xr-x  3 oracle oracle         18 Apr 17  2019 slax
+-rw-r-----  1 oracle oracle         10 Apr 17  2019 root.sh.old.3
+-rw-r-----  1 oracle oracle         10 Apr 17  2019 root.sh.old.1
+drwxr-xr-x  3 oracle oracle         21 Apr 17  2019 relnotes
+drwxr-xr-x  4 oracle oracle         29 Apr 17  2019 racg
+drwxr-xr-x  5 oracle oracle         52 Apr 17  2019 R
+drwxr-xr-x  5 oracle oracle         39 Apr 17  2019 perl
+drwxr-xr-x  4 oracle oracle         33 Apr 17  2019 owm
+drwxr-xr-x  3 oracle oracle         19 Apr 17  2019 oss
+drwxr-xr-x  6 oracle oracle         52 Apr 17  2019 ord
+drwxr-xr-x  4 oracle oracle         34 Apr 17  2019 oracore
+drwxr-xr-x  7 oracle oracle         65 Apr 17  2019 opmn
+drwxr-xr-x  5 oracle oracle         42 Apr 17  2019 olap
+drwxr-xr-x  5 oracle oracle         46 Apr 17  2019 nls
+drwxr-xr-x  4 oracle oracle         31 Apr 17  2019 mgw
+drwxr-xr-x  9 oracle oracle         98 Apr 17  2019 md
+drwxr-xr-x 10 oracle oracle        112 Apr 17  2019 ldap
+drwxr-xr-x  3 oracle oracle         18 Apr 17  2019 has
+drwxr-xr-x  3 oracle oracle         19 Apr 17  2019 dv
+drwxr-xr-x  3 oracle oracle         20 Apr 17  2019 diagnostics
+drwxr-xr-x  3 oracle oracle         20 Apr 17  2019 demo
+drwxr-xr-x  3 oracle oracle         19 Apr 17  2019 dbjava
+drwxr-xr-x  3 oracle oracle         20 Apr 17  2019 data
+drwxr-xr-x  7 oracle oracle         71 Apr 17  2019 cv
+drwxr-xr-x  3 oracle oracle         18 Apr 17  2019 css
+drwxr-xr-x  6 oracle oracle         55 Apr 17  2019 crs
+drwxr-xr-x  6 oracle oracle         78 Apr 17  2019 plsql
+drwxr-xr-x  2 oracle oracle         33 Apr 17  2019 utl
+drwxr-xr-x  2 oracle oracle         29 Apr 17  2019 instantclient
+drwxr-xr-x 13 oracle oracle        198 Apr 17  2019 dmu
+drwxr-xr-x  3 oracle oracle         35 Apr 17  2019 ucp
+drwxr-xr-x  3 oracle oracle         35 Apr 17  2019 jdbc
+drwxr-xr-x  2 oracle oracle         26 Apr 17  2019 QOpatch
+drwxr-xr-x  4 oracle oracle         66 Apr 17  2019 ords
+drwxr-xr-x  5 oracle oracle        119 Apr 17  2019 sdk
+drwxr-xr-x  6 oracle oracle       4096 Apr 17  2019 apex
+drwxr-xr-x  8 oracle oracle        101 Apr 17  2019 odbc
+drwxr-xr-x  2 oracle oracle       4096 Apr 17  2019 jlib
+drwxr-xr-x  4 oracle oracle         30 Apr 17  2019 drdaas
+drwxr-xr-x 11 oracle oracle        119 Apr 17  2019 ctx
+-rwx------  1 oracle oracle        786 Apr 17  2019 root.sh.old
+drwxr-xr-x 10 oracle oracle        106 Apr 17  2019 network
+drwxr-xr-x  5 oracle oracle         41 Apr 17  2019 hs
+drwxr-xr-x  9 oracle oracle         93 Apr 17  2019 assistants
+-rwx------  1 oracle oracle        638 Apr 18  2019 root.sh.old.2
+drwxr-xr-x  4 oracle oracle        236 Apr 18  2019 sqlpatch
+drwxr-xr-x 13 oracle oracle        140 Apr 18  2019 rdbms
+drwxr-xr-x  6 oracle oracle         56 Apr 18  2019 precomp
+drwxr-xr-x  6 oracle oracle        219 Apr 18  2019 jdk
+drwxr-xr-x  8 oracle oracle         82 Apr 18  2019 javavm
+-rwxrwxrwx  1 oracle oracle 3059705302 Sep 18  2020 LINUX.X64_193000_db_home.zip
+-rw-r-----  1 oracle oracle         48 Oct  5  2020 oraInst.loc
+drwxr-xr-x  6 oracle oracle         53 Jun 11 03:30 sqlplus
+drwxr-x--- 14 oracle oracle       4096 Jun 11 03:30 OPatch
+drwxr-xr-x  4 oracle oracle      12288 Jun 11 03:30 lib
+-rwx------  1 oracle oracle        512 Jun 11 03:30 root.sh
+drwxr-x--- 14 oracle oracle        233 Jun 11 03:30 inventory
+drwxr-xr-x  8 oracle oracle        226 Jun 11 03:30 oui
+drwxr-xr-x  5 oracle oracle        191 Jun 11 03:30 deinstall
+drwxr-xr-x  4 oracle oracle         87 Jun 11 03:30 clone
+drwxr-xr-x  2 oracle oracle        102 Jun 11 03:30 addnode
+drwxrwxr-x  4 oracle oracle         30 Jun 11 03:30 cfgtoollogs
+drwxrwx--- 10 oracle oracle       4096 Jun 11 03:32 install
+drwxr-xr-x  2 oracle oracle       8192 Jun 11 03:33 bin
+drwxr-xr-x  3 oracle oracle         18 Jun 17 02:16 admin
+drwxr-x--T  4 oracle oracle         31 Jun 18 03:35 log
+drwxr-xr-x  3 oracle oracle        216 Jul 16 02:51 dbs
+[oracle@node4 dbhome]$ rm -f LINUX.X64_193000_db_home.zip
+[oracle@node4 dbhome]$
+[oracle@node4 dbhome]$
+[oracle@node4 dbhome]$ sqlplus / as ysdba
+
+SQL*Plus: Release 19.0.0.0.0 - Production
+Version 19.3.0.0.0
+
+Copyright (c) 1982, 2019, Oracle.  All rights reserved.
+
+Use SQL*Plus to execute SQL, PL/SQL and SQL*Plus statements.
+
+Usage 1: sqlplus -H | -V
+
+    -H             Displays the SQL*Plus version and the
+                   usage help.
+    -V             Displays the SQL*Plus version.
+
+Usage 2: sqlplus [ [<option>] [{logon | /nolog}] [<start>] ]
+
+  <option> is: [-AC] [-C <version>] [-F] [-L] [-M "<options>"] [-NOLOGINTIME]
+               [-R <level>] [-S]
+
+    -AC            Enable Application Continuity.
+    -C <version>   Sets the compatibility of affected commands to the
+                   version specified by <version>.  The version has
+                   the form "x.y[.z]".  For example, -C 10.2.0
+    -F             This option improves performance in general. It changes
+                   the default values settings.
+                   See SQL*Plus User's Guide for the detailed settings.
+    -L             Attempts to log on just once, instead of
+                   reprompting on error.
+    -M "<options>" Sets automatic HTML or CSV markup of output.  The options
+                   have the form:
+                   {HTML html_options|CSV csv_options}
+                   See SQL*Plus User's Guide for detailed HTML and CSV options.
+    -NOLOGINTIME   Don't display Last Successful Login Time.
+    -R <level>     Sets restricted mode to disable SQL*Plus commands
+                   that interact with the file system.  The level can
+                   be 1, 2 or 3.  The most restrictive is -R 3 which
+                   disables all user commands interacting with the
+                   file system.
+    -S             Sets silent mode which suppresses the display of
+                   the SQL*Plus banner, prompts, and echoing of
+                   commands.
+
+  <logon> is: {<username>[/<password>][@<connect_identifier>] | / }
+              [AS {SYSDBA | SYSOPER | SYSASM | SYSBACKUP | SYSDG
+              | SYSKM | SYSRAC}] [EDITION=value]
+
+    Specifies the database account username, password and connect
+    identifier for the database connection.  Without a connect
+    identifier, SQL*Plus connects to the default database.
+
+    The AS SYSDBA, AS SYSOPER, AS SYSASM, AS SYSBACKUP, AS SYSDG,
+    AS SYSKM and AS SYSRAC options are database administration privileges.
+
+    <connect_identifier> can be in the form of Net Service Name
+    or Easy Connect.
+
+      @[<net_service_name> | [[//]Host[:Port]/<service_name>] |
+        [[[protocol:]//]host1{,host12}[:port1]{,host2:port2}[/service_name]
+         [:server][/instance_name][?[parameter_name=value]
+         {&parameter_name=value}]]]
+
+        <net_service_name> is a simple name for a service that resolves
+        to a connect descriptor.
+
+        Example: Connect to database using Net Service Name and the
+                 database net service name is ORCL.
+
+           sqlplus myusername/mypassword@ORCL
+
+        Host specifies the host name or IP address of the database
+        server computer.
+
+        Port specifies the listening port on the database server.
+
+        <service_name> specifies the service name of the database you
+        want to access.
+
+        Example: Connect to database using Easy Connect and the
+                 Service name is ORCL.
+
+           sqlplus myusername/mypassword@Host/ORCL
+
+    The /NOLOG option starts SQL*Plus without connecting to a
+    database.
+
+    The EDITION specifies the value for Session Edition.
+
+
+  <start> is: @<URL>|<filename>[.<ext>] [<parameter> ...]
+
+    Runs the specified SQL*Plus script from a web server (URL) or the
+    local file system (filename.ext) with specified parameters that
+    will be assigned to substitution variables in the script.
+
+When SQL*Plus starts, and after CONNECT commands, the site profile
+(e.g. $ORACLE_HOME/sqlplus/admin/glogin.sql) and the user profile
+(e.g. login.sql in the working directory) are run.  The files may
+contain SQL*Plus commands.
+
+Refer to the SQL*Plus User's Guide and Reference for more information.
+[oracle@node4 dbhome]$ sqlplus / as sysdba
+
+SQL*Plus: Release 19.0.0.0.0 - Production on Sun Jul 16 03:14:46 2023
+Version 19.3.0.0.0
+
+Copyright (c) 1982, 2019, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.3.0.0.0
+
+SQL>
+SQL>
+SQL>
+SQL> show parameter _2
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+db_2k_cache_size                     big integer 0
+db_32k_cache_size                    big integer 0
+db_create_online_log_dest_2          string
+dg_broker_config_file2               string      /orab/app/12.2/dbhome/dbs/dr2T
+                                                 EST.dat
+log_archive_dest_12                  string
+log_archive_dest_2                   string
+log_archive_dest_20                  string
+log_archive_dest_21                  string
+log_archive_dest_22                  string
+log_archive_dest_23                  string
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+log_archive_dest_24                  string
+log_archive_dest_25                  string
+log_archive_dest_26                  string
+log_archive_dest_27                  string
+log_archive_dest_28                  string
+log_archive_dest_29                  string
+log_archive_dest_state_12            string      enable
+log_archive_dest_state_2             string      enable
+log_archive_dest_state_20            string      enable
+log_archive_dest_state_21            string      enable
+log_archive_dest_state_22            string      enable
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+log_archive_dest_state_23            string      enable
+log_archive_dest_state_24            string      enable
+log_archive_dest_state_25            string      enable
+log_archive_dest_state_26            string      enable
+log_archive_dest_state_27            string      enable
+log_archive_dest_state_28            string      enable
+log_archive_dest_state_29            string      enable
+permit_92_wrap_format                boolean     TRUE
+plsql_v2_compatibility               boolean     FALSE
+sql92_security                       boolean     TRUE
+SQL> exit
+Disconnected from Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.3.0.0.0
+
+[oracle@node4 dbhome]$
+[oracle@node4 dbhome]$
+[oracle@node4 dbhome]$
+[oracle@node4 dbhome]$
+[oracle@node4 dbhome]$
+[oracle@node4 dbhome]$ orapwd file=$ORACLE_HOME/dbs/orapw$ORACLE_SID password=Bank_1234^C
+[oracle@node4 dbhome]$
+[oracle@node4 dbhome]$
+[oracle@node4 dbhome]$
+[oracle@node4 dbhome]$ orapwd -h
+Usage 1: orapwd file=<fname> force={y|n} asm={y|n}
+          dbuniquename=<dbname> format={12|12.2}
+          delete={y|n} input_file=<input-fname>
+          'sys={y | password | external(<sys-external-name>)
+                | global(<sys-directory-DN>)}'
+          'sysbackup={y | password | external(<sysbackup-external-name>)
+                      | global(<sysbackup-directory-DN>)}'
+          'sysdg={y | password | external(<sysdg-external-name>)
+                  | global(<sysdg-directory-DN>)}'
+          'syskm={y | password | external(<syskm-external-name>)
+                  | global(<syskm-directory-DN>)}'
+
+Usage 2: orapwd describe file=<fname>
+
+  where
+    file   - name of password file (required),
+    password
+           - password for SYS will be prompted
+             if not specified at command line.
+             Ignored, if input_file is specified,
+    force  - whether to overwrite existing file (optional),
+    asm    - indicates that the password to be stored in
+             Automatic Storage Management (ASM) disk group
+             is an ASM password. (optional),
+    dbuniquename
+           - unique database name used to identify database
+             password files residing in ASM diskgroup only.
+             Ignored when asm option is specified (optional),
+    format - use format=12 for new 12c features like SYSBACKUP, SYSDG
+             and SYSKM support, longer identifiers, SHA2 Verifiers etc.
+             use format=12.2 for 12.2 features like enforcing user
+             profile (password limits and password complexity) and
+             account status for administrative users.
+             If not specified, format=12.2 is default (optional),
+    delete - drops a password file. Must specify 'asm',
+             'dbuniquename' or 'file'. If 'file' is specified,
+             the file must be located on an ASM diskgroup (optional),
+    input_file
+           - name of input password file, from where old user
+             entries will be migrated (optional),
+    sys    - specifies if SYS user is password, externally or
+             globally authenticated.
+             For external SYS, also specifies external name.
+             For global SYS, also specifies directory DN.
+             SYS={y | password} specifies if SYS user password needs
+             to be changed when used with input_file,
+    sysbackup
+           - creates SYSBACKUP entry (optional).
+             Specifies if SYSBACKUP user is password, externally or
+             globally authenticated.
+             For external SYSBACKUP, also specifies external name.
+             For global SYSBACKUP, also specifies directory DN.
+             Ignored, if input_file is specified,
+    sysdg  - creates SYSDG entry (optional).
+             Specifies if SYSDG user is password, externally or
+             globally authenticated.
+             For external SYSDG, also specifies external name.
+             For global SYSDG, also specifies directory DN.
+             Ignored, if input_file is specified,
+    syskm  - creates SYSKM entry (optional).
+             Specifies if SYSKM user is password, externally or
+             globally authenticated.
+             For external SYSKM, also specifies external name.
+             For global SYSKM, also specifies directory DN.
+            Ignored, if input_file is specified,
+    describe
+           - describes the properties of specified password file
+             (required).
+
+
+  There must be no spaces around the equal-to (=) character.
+[oracle@node4 dbhome]$
+[oracle@node4 dbhome]$
+[oracle@node4 dbhome]$
+[oracle@node4 dbhome]$ orapwd file=$ORACLE_HOME/dbs/orapw$ORACLE_SID password=Bank_1234
+
+OPW-00005: File with same name exists - please delete or rename
+[oracle@node4 dbhome]$ cd dbs
+[oracle@node4 dbs]$
+[oracle@node4 dbs]$
+[oracle@node4 dbs]$
+[oracle@node4 dbs]$ ls -lrt orapw*
+-rw-r----- 1 oracle oracle 2048 Jun 11 03:56 orapwTEST1
+-rw-r----- 1 oracle oracle 2048 Jun 11 04:08 orapwTEST
+[oracle@node4 dbs]$ mv orapwTEST orapwTEST_old
+[oracle@node4 dbs]$ mv orapwHDFC orapwHDFC_old
+[oracle@node4 dbs]$
+[oracle@node4 dbs]$ orapwd file=$ORACLE_HOME/dbs/orapw$ORACLE_SID password=Bank_1234
+[oracle@node4 dbs]$ ls -lrt
+total 20852
+-rw-r--r-- 1 oracle oracle     3079 May 14  2015 init.ora
+-rw-r----- 1 oracle oracle     2048 Jun 11 03:56 orapwTEST1
+-rw-r----- 1 oracle oracle        0 Jun 11 03:56 lkinstTEST1
+-rw-rw---- 1 oracle oracle     1544 Jun 11 03:56 hc_TEST1.dat
+-rw-r----- 1 oracle oracle       24 Jun 11 04:06 lkTEST
+-rw-r----- 1 oracle oracle     2048 Jun 11 04:08 orapwTEST_old
+-rw-rw---- 1 oracle oracle 10715136 Jul  9 04:20 c-2437345307-20230709-00
+-rw-rw---- 1 oracle oracle 10600448 Jul 15 03:05 snapcf_TEST.f
+-rw-r----- 1 oracle oracle     3584 Jul 16 02:52 spfileTEST.ora
+-rw-rw---- 1 oracle oracle     1544 Jul 16 02:52 hc_TEST.dat
+drwxrwxr-x 2 oracle oracle       87 Jul 16 02:52 arch
+-rw-r----- 1 oracle oracle     6144 Jul 16 03:41 orapwTEST
+[oracle@node4 dbs]$ scp -pr orapwTEST root@192.168.137.9:/oradata/app/oracle/product/19c/dbhome/dbs
+root@192.168.137.9's password:
+orapwTEST                                                                                                                                                  100% 6144     6.0KB/s   00:00
+[oracle@node4 dbs]$
+[oracle@node4 dbs]$
+[oracle@node4 dbs]$ cd ../network/admin
+[oracle@node4 admin]$
+[oracle@node4 admin]$
+[oracle@node4 admin]$
+[oracle@node4 admin]$ ls -lrt
+total 12
+-rw-r--r-- 1 oracle oracle 1536 Feb 13  2018 shrept.lst
+-rw-r----- 1 oracle oracle  649 Jun 17 03:12 listener.ora
+drwxr-xr-x 2 oracle oracle   64 Jun 17 03:15 samples
+-rw-rw-r-- 1 oracle oracle  146 Jun 17 03:20 tnsnames.ora
+[oracle@node4 admin]$
+[oracle@node4 admin]$ cat listener.ora
+# listener.ora Network Configuration File: /orab/app/12.2/dbhome/network/admin/listener.ora
+# Generated by Oracle configuration tools.
+
+#LISTENER_TEST =
+#  (DESCRIPTION_LIST =
+#    (DESCRIPTION =
+#
+#      (ADDRESS = (PROTOCOL = TCP)(HOST = NODE4)(PORT = 1621))
+#      (ADDRESS = (PROTOCOL = IPC)(KEY = EXTPROC1621))
+#    )
+#  )
+
+###################################################
+LISTENER_T =
+(DESCRIPTION_LIST=
+  (DESCRIPTION =
+       (ADDRESS = (PROTOCOL = TCP)(HOST = NODE4)(PORT = 1621))
+ )
+)
+SID_LIST_LISTENER_T =
+   (SID_LIST=
+       (SID_DESC=
+          (SID_NAME=TEST)
+          (ORACLE_HOME=/orab/app/12.2/dbhome)
+         )
+        )
+
+
+[oracle@node4 admin]$ lsnrctl start LISTENER_T
+
+LSNRCTL for Linux: Version 19.0.0.0.0 - Production on 16-JUL-2023 03:43:42
+
+Copyright (c) 1991, 2019, Oracle.  All rights reserved.
+
+Starting /orab/app/12.2/dbhome/bin/tnslsnr: please wait...
+
+TNSLSNR for Linux: Version 19.0.0.0.0 - Production
+System parameter file is /orab/app/12.2/dbhome/network/admin/listener.ora
+Log messages written to /orab/app/oracle/diag/tnslsnr/node4/listener_t/alert/log.xml
+Listening on: (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=NODE4)(PORT=1621)))
+
+Connecting to (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=NODE4)(PORT=1621)))
+STATUS of the LISTENER
+------------------------
+Alias                     LISTENER_T
+Version                   TNSLSNR for Linux: Version 19.0.0.0.0 - Production
+Start Date                16-JUL-2023 03:43:42
+Uptime                    0 days 0 hr. 0 min. 0 sec
+Trace Level               off
+Security                  ON: Local OS Authentication
+SNMP                      OFF
+Listener Parameter File   /orab/app/12.2/dbhome/network/admin/listener.ora
+Listener Log File         /orab/app/oracle/diag/tnslsnr/node4/listener_t/alert/log.xml
+Listening Endpoints Summary...
+  (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=NODE4)(PORT=1621)))
+Services Summary...
+Service "TEST" has 1 instance(s).
+  Instance "TEST", status UNKNOWN, has 1 handler(s) for this service...
+The command completed successfully
+[oracle@node4 admin]$
+[oracle@node4 admin]$
+[oracle@node4 admin]$ cat tnsnames.ora
+TEST =
+(DESCRIPTION =
+  (ADDRESS_LIST=
+       (ADDRESS=(PROTOCOL=tcp)(HOST=192.168.137.3)(PORT=1621))
+  )
+ (CONNECT_DATA =
+       (SID=TEST)
+ )
+)
+[oracle@node4 admin]$
+[oracle@node4 admin]$
+[oracle@node4 admin]$ vi tnsnames.ora
+[oracle@node4 admin]$
+[oracle@node4 admin]$
+[oracle@node4 admin]$
+[oracle@node4 admin]$ tnsping TEST_FC
+
+TNS Ping Utility for Linux: Version 19.0.0.0.0 - Production on 16-JUL-2023 03:50:56
+
+Copyright (c) 1997, 2019, Oracle.  All rights reserved.
+
+Used parameter files:
+
+
+Used TNSNAMES adapter to resolve the alias
+Attempting to contact (DESCRIPTION = (ADDRESS_LIST= (ADDRESS=(PROTOCOL=tcp)(HOST=192.168.137.3)(PORT=1621))) (CONNECT_DATA = (SID=TEST)))
+OK (0 msec)
+[oracle@node4 admin]$ tnsping TEST_FS
+
+TNS Ping Utility for Linux: Version 19.0.0.0.0 - Production on 16-JUL-2023 03:51:03
+
+Copyright (c) 1997, 2019, Oracle.  All rights reserved.
+
+Used parameter files:
+
+
+Used TNSNAMES adapter to resolve the alias
+Attempting to contact (DESCRIPTION = (ADDRESS_LIST= (ADDRESS=(PROTOCOL=tcp)(HOST=192.168.137.9)(PORT=1621))) (CONNECT_DATA = (SID=TEST)))
+OK (10 msec)
+[oracle@node4 admin]$
+[oracle@node4 admin]$
+[oracle@node4 admin]$
+[oracle@node4 admin]$
+[oracle@node4 admin]$ sqlplus / as sysdba
+
+SQL*Plus: Release 19.0.0.0.0 - Production on Sun Jul 16 03:53:08 2023
+Version 19.3.0.0.0
+
+Copyright (c) 1982, 2019, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.3.0.0.0
+
+SQL>
+SQL>
+SQL> show parameter _2
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+db_2k_cache_size                     big integer 0
+db_32k_cache_size                    big integer 0
+db_create_online_log_dest_2          string
+dg_broker_config_file2               string      /orab/app/12.2/dbhome/dbs/dr2T
+                                                 EST.dat
+log_archive_dest_12                  string
+log_archive_dest_2                   string
+log_archive_dest_20                  string
+log_archive_dest_21                  string
+log_archive_dest_22                  string
+log_archive_dest_23                  string
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+log_archive_dest_24                  string
+log_archive_dest_25                  string
+log_archive_dest_26                  string
+log_archive_dest_27                  string
+log_archive_dest_28                  string
+log_archive_dest_29                  string
+log_archive_dest_state_12            string      enable
+log_archive_dest_state_2             string      enable
+log_archive_dest_state_20            string      enable
+log_archive_dest_state_21            string      enable
+log_archive_dest_state_22            string      enable
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+log_archive_dest_state_23            string      enable
+log_archive_dest_state_24            string      enable
+log_archive_dest_state_25            string      enable
+log_archive_dest_state_26            string      enable
+log_archive_dest_state_27            string      enable
+log_archive_dest_state_28            string      enable
+log_archive_dest_state_29            string      enable
+permit_92_wrap_format                boolean     TRUE
+plsql_v2_compatibility               boolean     FALSE
+sql92_security                       boolean     TRUE
+SQL>
+SQL>
+SQL> alter system set log_archive_dest_2='service=TEST_FS';
+
+System altered.
+
+SQL>
+SQL>
+SQL> show parameter _2
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+db_2k_cache_size                     big integer 0
+db_32k_cache_size                    big integer 0
+db_create_online_log_dest_2          string
+dg_broker_config_file2               string      /orab/app/12.2/dbhome/dbs/dr2T
+                                                 EST.dat
+log_archive_dest_12                  string
+log_archive_dest_2                   string      service=TEST_FS
+log_archive_dest_20                  string
+log_archive_dest_21                  string
+log_archive_dest_22                  string
+log_archive_dest_23                  string
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+log_archive_dest_24                  string
+log_archive_dest_25                  string
+log_archive_dest_26                  string
+log_archive_dest_27                  string
+log_archive_dest_28                  string
+log_archive_dest_29                  string
+log_archive_dest_state_12            string      enable
+log_archive_dest_state_2             string      enable
+log_archive_dest_state_20            string      enable
+log_archive_dest_state_21            string      enable
+log_archive_dest_state_22            string      enable
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+log_archive_dest_state_23            string      enable
+log_archive_dest_state_24            string      enable
+log_archive_dest_state_25            string      enable
+log_archive_dest_state_26            string      enable
+log_archive_dest_state_27            string      enable
+log_archive_dest_state_28            string      enable
+log_archive_dest_state_29            string      enable
+permit_92_wrap_format                boolean     TRUE
+plsql_v2_compatibility               boolean     FALSE
+sql92_security                       boolean     TRUE
+SQL> alter system set log_archive_dest_state_2='ENABLE';
+
+System altered.
+
+SQL>
+SQL>
+SQL> show parameter _1
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+DBFIPS_140                           boolean     FALSE
+db_16k_cache_size                    big integer 0
+db_create_online_log_dest_1          string
+dg_broker_config_file1               string      /orab/app/12.2/dbhome/dbs/dr1T
+                                                 EST.dat
+log_archive_dest_1                   string      location=/orab/app/12.2/dbhome
+                                                 /dbs/arch
+log_archive_dest_10                  string
+log_archive_dest_11                  string
+log_archive_dest_12                  string
+log_archive_dest_13                  string
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+log_archive_dest_14                  string
+log_archive_dest_15                  string
+log_archive_dest_16                  string
+log_archive_dest_17                  string
+log_archive_dest_18                  string
+log_archive_dest_19                  string
+log_archive_dest_21                  string
+log_archive_dest_31                  string
+log_archive_dest_state_1             string      enable
+log_archive_dest_state_10            string      enable
+log_archive_dest_state_11            string      enable
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+log_archive_dest_state_12            string      enable
+log_archive_dest_state_13            string      enable
+log_archive_dest_state_14            string      enable
+log_archive_dest_state_15            string      enable
+log_archive_dest_state_16            string      enable
+log_archive_dest_state_17            string      enable
+log_archive_dest_state_18            string      enable
+log_archive_dest_state_19            string      enable
+log_archive_dest_state_21            string      enable
+log_archive_dest_state_31            string      enable
+SQL> archive log list
+Database log mode              Archive Mode
+Automatic archival             Enabled
+Archive destination            /orab/app/12.2/dbhome/dbs/arch
+Oldest online log sequence     12
+Next log sequence to archive   14
+Current log sequence           14
+SQL>
+SQL>
+SQL>
+SQL>
+SQL>
+SQL> exit
+Disconnected from Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.3.0.0.0
+
+
+
+
+[oracle@node4 admin]$
+[oracle@node4 admin]$
+[oracle@node4 admin]$
+[oracle@node4 admin]$
+[oracle@node4 admin]$
+[oracle@node4 admin]$
+[oracle@node4 admin]$
+[oracle@node4 admin]$
+[oracle@node4 admin]$ cd ../../dbs
+[oracle@node4 dbs]$
+[oracle@node4 dbs]$
+[oracle@node4 dbs]$
+[oracle@node4 dbs]$ ls -lrt
+total 20852
+-rw-r--r-- 1 oracle oracle     3079 May 14  2015 init.ora
+-rw-r----- 1 oracle oracle     2048 Jun 11 03:56 orapwTEST1
+-rw-r----- 1 oracle oracle        0 Jun 11 03:56 lkinstTEST1
+-rw-rw---- 1 oracle oracle     1544 Jun 11 03:56 hc_TEST1.dat
+-rw-r----- 1 oracle oracle       24 Jun 11 04:06 lkTEST
+-rw-r----- 1 oracle oracle     2048 Jun 11 04:08 orapwTEST_old
+-rw-rw---- 1 oracle oracle 10715136 Jul  9 04:20 c-2437345307-20230709-00
+-rw-rw---- 1 oracle oracle 10600448 Jul 15 03:05 snapcf_TEST.f
+-rw-rw---- 1 oracle oracle     1544 Jul 16 02:52 hc_TEST.dat
+-rw-r----- 1 oracle oracle     6144 Jul 16 03:41 orapwTEST
+drwxrwxr-x 2 oracle oracle      114 Jul 16 03:54 arch
+-rw-r----- 1 oracle oracle     3584 Jul 16 03:55 spfileTEST.ora
+[oracle@node4 dbs]$
+[oracle@node4 dbs]$ strings spfileTEST.ora
+TEST.__data_transfer_cache_size=0
+TEST.__db_cache_size=1426063360
+TEST.__inmemory_ext_roarea=0
+TEST.__inmemory_ext_rwarea=0
+TEST.__java_pool_size=0
+TEST.__large_pool_size=16777216
+TEST.__oracle_base='/orab/app/oracle'#ORACLE_BASE set from environment
+TEST.__pga_aggregate_target=503316480
+TEST.__sga_target=2097152000
+TEST.__shared_io_pool_size=100663296
+TEST.__shared_pool_size=503316480
+TEST.__streams_pool_size=33554432
+TEST.__unified_pga_pool_size=0
+*.audit_file_dest='/orab/app/oracl
+e/admin/TEST/adump'
+*.audit_trail='db'
+*.compatible='19.0.0'
+*.control_files='/orab/TEST/datafiles/TEST/control01.ctl','/orab/TEST/datafiles/TEST/control02.ctl'
+*.db_block_size=8192
+*.db_name='TEST'
+*.diagnostic_dest='/orab/app/oracle'
+*.dispatchers='(PROTOCOL=TCP) (SERVICE=TESTXDB)'
+*.local_listener='(ADDRESS = (PROTOCOL = TCP)(HOST = NODE4)(PORT = 1621))'
+*.log_archive_dest_1='location=/orab/app/12.2/dbhome/dbs/arch'
+*.log_archive_dest_2='service=TEST_FS'
+*.log_archive_dest_state_2
+='ENABLE'
+*.nls_language='AMERICAN'
+*.nls_territory='AMERICA'
+*.open_cursors=300
+*.pga_aggregate_target=478m
+*.processes=100
+*.remote_login_passwordfile='EXCLUSIVE'
+*.sga_target=2000m
+*.undo_tablespace='UNDOTBS1'
+[oracle@node4 dbs]$
+[oracle@node4 dbs]$
+[oracle@node4 dbs]$
+[oracle@node4 dbs]$
+[oracle@node4 dbs]$
+[oracle@node4 dbs]$ sqlplus / as sysdba
+
+SQL*Plus: Release 19.0.0.0.0 - Production on Sun Jul 16 04:00:38 2023
+Version 19.3.0.0.0
+
+Copyright (c) 1982, 2019, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.3.0.0.0
+
+SQL>
+SQL>
+SQL> archive log list
+Database log mode              Archive Mode
+Automatic archival             Enabled
+Archive destination            /orab/app/12.2/dbhome/dbs/arch
+Oldest online log sequence     12
+Next log sequence to archive   14
+Current log sequence           14
+SQL>
+SQL>
+SQL>
+SQL>
+SQL> show parameter fal
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+fal_client                           string
+fal_server                           string
+SQL> alter system set fal_client='TEST_FC';
+
+System altered.
+
+SQL> alter system set fal_server='TEST_FS';
+
+System altered.
+
+SQL> show parameter fal
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+fal_client                           string      TEST_FC
+fal_server                           string      TEST_FS
+SQL> !tnsping TEST_FC
+
+TNS Ping Utility for Linux: Version 19.0.0.0.0 - Production on 16-JUL-2023 04:09:28
+
+Copyright (c) 1997, 2019, Oracle.  All rights reserved.
+
+Used parameter files:
+
+
+Used TNSNAMES adapter to resolve the alias
+Attempting to contact (DESCRIPTION = (ADDRESS_LIST= (ADDRESS=(PROTOCOL=tcp)(HOST=192.168.137.3)(PORT=1621))) (CONNECT_DATA = (SID=TEST)))
+OK (0 msec)
+
+SQL> select name,open_mode from gv$database;
+
+NAME      OPEN_MODE
+--------- --------------------
+TEST      READ WRITE
+
+SQL>
+SQL>
+SQL>
+SQL> select max(sequence#) from v$archive_log;
+select max(sequence#) from v$archive_log
+                           *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> select max(sequence#) from v$archived_log;
+
+MAX(SEQUENCE#)
+--------------
+            13
+
+SQL>
+SQL>
+SQL> alter system switch logfile;
+
+System altered.
+
+SQL> /
+
+System altered.
+
+SQL> select max(sequence#) from v$archived_log;
+
+MAX(SEQUENCE#)
+--------------
+            15
+
+SQL>
+SQL>
+SQL> select name from v$datafile;
+
+NAME
+--------------------------------------------------------------------------------
+/orab/TEST/datafiles/TEST/system01.dbf
+/orab/TEST/datafiles/TEST/test_tbs1.dbf
+/orab/TEST/datafiles/TEST/sysaux01.dbf
+/orab/TEST/datafiles/TEST/undotbs01.dbf
+/orab/TEST/datafiles/TEST/test_tbs.dbf
+/orab/TEST/datafiles/TEST/users01.dbf
+
+6 rows selected.
+
+SQL> select name from v$tablespace;
+
+NAME
+------------------------------
+SYSAUX
+SYSTEM
+UNDOTBS1
+USERS
+TEMP
+TEST_TBS
+
+6 rows selected.
+
+SQL>
+SQL>
+SQL> show parameter standby
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+enabled_PDBs_on_standby              string      *
+standby_db_preserve_states           string      NONE
+standby_file_management              string      MANUAL
+standby_pdb_source_file_dblink       string
+standby_pdb_source_file_directory    string
+SQL>
+SQL>
+SQL> alter system set standby_file_management='AUTO';
+
+System altered.
+
+SQL> !hostname
+node4
+
+SQL>
+SQL>
+SQL> alter tablespace TEST_TBS add datafile '/orab/TEST/datafiles/TEST/test_tbs1.dbf' size 1m;
+alter tablespace TEST_TBS add datafile '/orab/TEST/datafiles/TEST/test_tbs1.dbf' size 1m
+*
+ERROR at line 1:
+ORA-01537: cannot add file '/orab/TEST/datafiles/TEST/test_tbs1.dbf' - file
+already part of database
+
+
+SQL>
+SQL> alter tablespace TEST_TBS add datafile '/orab/TEST/datafiles/TEST/test_tbs2.dbf' size 1m;
+
+Tablespace altered.
+
+SQL> alter system switch logfile;
+
+System altered.
+
+SQL> alter system set standby_file_management='MANUAL';
+
+System altered.
+
+SQL> alter tablespace TEST_TBS add datafile '/orab/TEST/datafiles/TEST/test_tbs3.dbf' size 1m;
+
+Tablespace altered.
+
+SQL> alter system switch logfile;
+
+System altered.
+
+SQL> select file#,name from v$datafile;
+
+     FILE#
+----------
+NAME
+--------------------------------------------------------------------------------
+         1
+/orab/TEST/datafiles/TEST/system01.dbf
+
+         2
+/orab/TEST/datafiles/TEST/test_tbs1.dbf
+
+         3
+/orab/TEST/datafiles/TEST/sysaux01.dbf
+
+
+     FILE#
+----------
+NAME
+--------------------------------------------------------------------------------
+         4
+/orab/TEST/datafiles/TEST/undotbs01.dbf
+
+         5
+/orab/TEST/datafiles/TEST/test_tbs.dbf
+
+         7
+/orab/TEST/datafiles/TEST/users01.dbf
+
+
+     FILE#
+----------
+NAME
+--------------------------------------------------------------------------------
+         8
+/orab/TEST/datafiles/TEST/test_tbs2.dbf
+
+         9
+/orab/TEST/datafiles/TEST/test_tbs3.dbf
+
+
+8 rows selected.
+
+SQL> col name for a75
+SQL>
+SQL> /
+
+     FILE#
+----------
+NAME
+---------------------------------------------------------------------------
+         1
+/orab/TEST/datafiles/TEST/system01.dbf
+
+         2
+/orab/TEST/datafiles/TEST/test_tbs1.dbf
+
+         3
+/orab/TEST/datafiles/TEST/sysaux01.dbf
+
+
+     FILE#
+----------
+NAME
+---------------------------------------------------------------------------
+         4
+/orab/TEST/datafiles/TEST/undotbs01.dbf
+
+         5
+/orab/TEST/datafiles/TEST/test_tbs.dbf
+
+         7
+/orab/TEST/datafiles/TEST/users01.dbf
+
+
+     FILE#
+----------
+NAME
+---------------------------------------------------------------------------
+         8
+/orab/TEST/datafiles/TEST/test_tbs2.dbf
+
+         9
+/orab/TEST/datafiles/TEST/test_tbs3.dbf
+
+
+8 rows selected.
+
+SQL> set lines 200 pages 300
+SQL>
+SQL> /
+
+     FILE# NAME
+---------- ---------------------------------------------------------------------------
+         1 /orab/TEST/datafiles/TEST/system01.dbf
+         2 /orab/TEST/datafiles/TEST/test_tbs1.dbf
+         3 /orab/TEST/datafiles/TEST/sysaux01.dbf
+         4 /orab/TEST/datafiles/TEST/undotbs01.dbf
+         5 /orab/TEST/datafiles/TEST/test_tbs.dbf
+         7 /orab/TEST/datafiles/TEST/users01.dbf
+         8 /orab/TEST/datafiles/TEST/test_tbs2.dbf
+         9 /orab/TEST/datafiles/TEST/test_tbs3.dbf
+
+8 rows selected.
+
+SQL> l
+  1* select file#,name from v$datafile
+SQL>
+SQL>
+SQL> alter system switch logfile;
+/
+
+System altered.
+
+SQL>
+System altered.
+
+SQL> alter system set standby_file_management='AUTO';
+
+System altered.
+
+SQL>
+SQL>
+SQL> alter system switch logfile;
+
+System altered.
+
+SQL> alter system switch logfile;
+
+System altered.
+
+SQL> /
+
+System altered.
+
+SQL> /
+
+System altered.
+
+SQL> /
+/
+
+System altered.
+
+SQL>
+System altered.
+
+SQL>
+SQL>
+SQL>
+SQL>
+SQL>
+SQL>
+SQL>
+SQL> select name from v$datafile;
+
+NAME
+---------------------------------------------------------------------------
+/orab/TEST/datafiles/TEST/system01.dbf
+/orab/TEST/datafiles/TEST/test_tbs1.dbf
+/orab/TEST/datafiles/TEST/sysaux01.dbf
+/orab/TEST/datafiles/TEST/undotbs01.dbf
+/orab/TEST/datafiles/TEST/test_tbs.dbf
+/orab/TEST/datafiles/TEST/users01.dbf
+/orab/TEST/datafiles/TEST/test_tbs2.dbf
+/orab/TEST/datafiles/TEST/test_tbs3.dbf
+
+8 rows selected.
+
+SQL>
+SQL>
+SQL>
+SQL>
+SQL>
+SQL> !mkdir -p /orab/TEST/datafiles/TEST/NEW
+
+SQL>
+SQL>
+SQL> !ls -ld /orab/TEST/datafiles/TEST/NEW
+drwxrwxr-x 2 oracle oracle 6 Jul 16 04:42 /orab/TEST/datafiles/TEST/NEW
+
+SQL>
+SQL>
+SQL> alter tablespace TEST_TBS add datafile '/orab/TEST/datafiles/TEST/NEW/test_tbs4.dbf' size 1m;
+
+Tablespace altered.
+
+SQL> select file#,name from v$datafile;
+
+     FILE# NAME
+---------- ---------------------------------------------------------------------------
+         1 /orab/TEST/datafiles/TEST/system01.dbf
+         2 /orab/TEST/datafiles/TEST/test_tbs1.dbf
+         3 /orab/TEST/datafiles/TEST/sysaux01.dbf
+         4 /orab/TEST/datafiles/TEST/undotbs01.dbf
+         5 /orab/TEST/datafiles/TEST/test_tbs.dbf
+         7 /orab/TEST/datafiles/TEST/users01.dbf
+         8 /orab/TEST/datafiles/TEST/test_tbs2.dbf
+         9 /orab/TEST/datafiles/TEST/test_tbs3.dbf
+        10 /orab/TEST/datafiles/TEST/NEW/test_tbs4.dbf
+
+9 rows selected.
+
+SQL> alter system switch logfile;
+
+System altered.
+
+SQL> /
+
+System altered.
+
+SQL>

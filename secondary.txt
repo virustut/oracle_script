@@ -1,0 +1,1731 @@
+login as: root
+root@192.168.137.9's password:
+Last login: Sun Jul 16 02:48:30 2023
+[root@node9 ~]#
+[root@node9 ~]#
+[root@node9 ~]# su - oracle
+
+Last login: Sun May 14 03:50:20 EDT 2023 on pts/1
+
+[oracle@node9 ~]$
+[oracle@node9 ~]$
+[oracle@node9 ~]$
+[oracle@node9 ~]$
+[oracle@node9 ~]$
+[oracle@node9 ~]$
+[oracle@node9 ~]$
+[oracle@node9 ~]$ env |grep ORA
+ORACLE_SID=orcl
+ORACLE_HOME=/oradata/app/oracle/product/19c/dbhome
+[oracle@node9 ~]$
+[oracle@node9 ~]$
+[oracle@node9 ~]$
+[oracle@node9 ~]$
+[oracle@node9 ~]$ df -kh
+Filesystem               Size  Used Avail Use% Mounted on
+/dev/mapper/rhel-root    9.4G  2.5G  6.9G  27% /
+devtmpfs                 3.9G     0  3.9G   0% /dev
+tmpfs                    3.9G     0  3.9G   0% /dev/shm
+tmpfs                    3.9G  8.7M  3.9G   1% /run
+tmpfs                    3.9G     0  3.9G   0% /sys/fs/cgroup
+/dev/sdc                  20G   14G  5.2G  72% /oradata
+/dev/sda1                197M  116M   82M  59% /boot
+/dev/mapper/rhel-home    1.9G   79M  1.8G   5% /home
+/dev/mapper/orab-lvorab   40G   29G   11G  73% /orab
+tmpfs                    781M     0  781M   0% /run/user/0
+[oracle@node9 ~]$
+[oracle@node9 ~]$
+[oracle@node9 ~]$ ip r l
+default via 192.168.137.1 dev ens33  proto static  metric 100
+192.168.122.0/24 dev virbr0  proto kernel  scope link  src 192.168.122.1
+192.168.137.0/24 dev ens33  proto kernel  scope link  src 192.168.137.9  metric 100
+[oracle@node9 ~]$
+[oracle@node9 ~]$
+[oracle@node9 ~]$
+[oracle@node9 ~]$ cd /orab
+[oracle@node9 orab]$
+[oracle@node9 orab]$
+[oracle@node9 orab]$ ls -lrt
+total 1252444
+drwxrwxr-x. 5 oracle oinstall        54 Nov  3  2020 app
+drwxrwxr-x  4 oracle oracle          34 Nov  5  2020 fra
+drwxrwxr-x  4 oracle oracle          43 Nov 22  2020 cdbdatabase
+drwxrwxr-x  2 oracle oracle        4096 Nov 30  2020 archlog
+drwxrwxr-x  2 oracle oracle           6 Nov 30  2020 redo
+drwxrwxr-x  2 oracle oracle           6 Nov 30  2020 controlfile
+drwxrwxrwx  3 oracle oracle         153 Dec  1  2020 backup
+drwxrwxr-x  2 oracle oracle         125 Dec  2  2020 datafile
+drwxrwxr-x  2 oracle oracle          25 Dec  2  2020 xml
+drwxr-x---  3 oracle oracle          18 Feb 11 07:27 DATA
+-rw-rw----  1 root   root      10682368 Jul 15 03:04 db_0h219oal
+-rw-rw----  1 root   root        114688 Jul 15 03:04 db_0i219oao
+-rw-rw----  1 root   root       7438336 Jul 15 03:05 db_0g219oal
+-rw-rw----  1 root   root     437936128 Jul 15 03:05 db_0f219oal
+-rw-rw----  1 root   root     815644672 Jul 15 03:05 db_0e219oal
+-rw-rw----  1 root   root      10682368 Jul 15 03:05 control_0j219obs
+[oracle@node9 orab]$
+[oracle@node9 orab]$
+[oracle@node9 orab]$
+[oracle@node9 orab]$ ls -lrt
+total 1252444
+drwxrwxr-x. 5 oracle oinstall        54 Nov  3  2020 app
+drwxrwxr-x  4 oracle oracle          34 Nov  5  2020 fra
+drwxrwxr-x  4 oracle oracle          43 Nov 22  2020 cdbdatabase
+drwxrwxr-x  2 oracle oracle        4096 Nov 30  2020 archlog
+drwxrwxr-x  2 oracle oracle           6 Nov 30  2020 redo
+drwxrwxr-x  2 oracle oracle           6 Nov 30  2020 controlfile
+drwxrwxrwx  3 oracle oracle         153 Dec  1  2020 backup
+drwxrwxr-x  2 oracle oracle         125 Dec  2  2020 datafile
+drwxrwxr-x  2 oracle oracle          25 Dec  2  2020 xml
+drwxr-x---  3 oracle oracle          18 Feb 11 07:27 DATA
+-rw-rw----  1 root   root      10682368 Jul 15 03:04 db_0h219oal
+-rw-rw----  1 root   root        114688 Jul 15 03:04 db_0i219oao
+-rw-rw----  1 root   root       7438336 Jul 15 03:05 db_0g219oal
+-rw-rw----  1 root   root     437936128 Jul 15 03:05 db_0f219oal
+-rw-rw----  1 root   root     815644672 Jul 15 03:05 db_0e219oal
+-rw-rw----  1 root   root      10682368 Jul 15 03:05 control_0j219obs
+[oracle@node9 orab]$
+[oracle@node9 orab]$
+[oracle@node9 orab]$
+[oracle@node9 orab]$ cd app
+[oracle@node9 app]$
+[oracle@node9 app]$ ls -lrt
+total 0
+drwxrwxr-x. 3 oracle oinstall  22 Nov  3  2020 dbhome
+drwxrwxr-x  9 oracle oinstall 108 Nov 22  2020 oracle
+drwxrwx---  6 oracle oracle   103 May 14 03:55 oraInventory
+[oracle@node9 app]$
+[oracle@node9 app]$
+[oracle@node9 app]$ mkdir backup
+[oracle@node9 app]$
+[oracle@node9 app]$
+[oracle@node9 app]$ 
+[oracle@node9 app]$ cd ..
+[oracle@node9 orab]$
+[oracle@node9 orab]$ mv db* con* /orab/app/backup/
+[oracle@node9 orab]$ ls -lty
+ls: invalid option -- 'y'
+Try 'ls --help' for more information.
+[oracle@node9 orab]$ ls -lrt
+total 4
+drwxrwxr-x  4 oracle oracle     34 Nov  5  2020 fra
+drwxrwxr-x  4 oracle oracle     43 Nov 22  2020 cdbdatabase
+drwxrwxr-x  2 oracle oracle   4096 Nov 30  2020 archlog
+drwxrwxr-x  2 oracle oracle      6 Nov 30  2020 redo
+drwxrwxrwx  3 oracle oracle    153 Dec  1  2020 backup
+drwxrwxr-x  2 oracle oracle    125 Dec  2  2020 datafile
+drwxrwxr-x  2 oracle oracle     25 Dec  2  2020 xml
+drwxr-x---  3 oracle oracle     18 Feb 11 07:27 DATA
+drwxrwxr-x. 6 oracle oinstall   68 Jul 16 03:07 app
+[oracle@node9 orab]$ cd app/backup/
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$ ls -lrt
+total 1252440
+drwxrwxr-x 2 oracle oracle         6 Nov 30  2020 controlfile
+-rw-rw---- 1 root   root    10682368 Jul 15 03:04 db_0h219oal
+-rw-rw---- 1 root   root      114688 Jul 15 03:04 db_0i219oao
+-rw-rw---- 1 root   root     7438336 Jul 15 03:05 db_0g219oal
+-rw-rw---- 1 root   root   437936128 Jul 15 03:05 db_0f219oal
+-rw-rw---- 1 root   root   815644672 Jul 15 03:05 db_0e219oal
+-rw-rw---- 1 root   root    10682368 Jul 15 03:05 control_0j219obs
+[oracle@node9 backup]$ mv controlfile /orab/
+[oracle@node9 backup]$ ls -lrt
+total 1252440
+-rw-rw---- 1 root root  10682368 Jul 15 03:04 db_0h219oal
+-rw-rw---- 1 root root    114688 Jul 15 03:04 db_0i219oao
+-rw-rw---- 1 root root   7438336 Jul 15 03:05 db_0g219oal
+-rw-rw---- 1 root root 437936128 Jul 15 03:05 db_0f219oal
+-rw-rw---- 1 root root 815644672 Jul 15 03:05 db_0e219oal
+-rw-rw---- 1 root root  10682368 Jul 15 03:05 control_0j219obs
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$ ls -ld /orab/TEST/datafiles/TEST
+ls: cannot access /orab/TEST/datafiles/TEST: No such file or directory
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$ mkdir -p /orab/TEST/datafiles/TEST
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$ ls -ld /orab/app/oracle
+drwxrwxr-x 9 oracle oinstall 108 Nov 22  2020 /orab/app/oracle
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$ env |grep ORA
+ORACLE_SID=orcl
+ORACLE_HOME=/oradata/app/oracle/product/19c/dbhome
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$ ----comment /home/ordb/app/dbhome/dbs/arch
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$ ls -ld /orab/app/12.2/dbhome/dbs/arch
+ls: cannot access /orab/app/12.2/dbhome/dbs/arch: No such file or directory
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$ mkdir -p /orab/app/12.2/dbhome/dbs/arch
+[oracle@node9 backup]$ ip r l
+default via 192.168.137.1 dev ens33  proto static  metric 100
+192.168.122.0/24 dev virbr0  proto kernel  scope link  src 192.168.122.1
+192.168.137.0/24 dev ens33  proto kernel  scope link  src 192.168.137.9  metric 100
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$ df -kh
+Filesystem               Size  Used Avail Use% Mounted on
+/dev/mapper/rhel-root    9.4G  2.5G  6.9G  27% /
+devtmpfs                 3.9G     0  3.9G   0% /dev
+tmpfs                    3.9G     0  3.9G   0% /dev/shm
+tmpfs                    3.9G  8.7M  3.9G   1% /run
+tmpfs                    3.9G     0  3.9G   0% /sys/fs/cgroup
+/dev/sdc                  20G   14G  5.2G  72% /oradata
+/dev/sda1                197M  116M   82M  59% /boot
+/dev/mapper/rhel-home    1.9G   79M  1.8G   5% /home
+/dev/mapper/orab-lvorab   40G   31G  9.8G  76% /orab
+tmpfs                    781M     0  781M   0% /run/user/0
+[oracle@node9 backup]$ cd /orab
+[oracle@node9 orab]$
+[oracle@node9 orab]$
+[oracle@node9 orab]$ ls -lrt
+total 4
+drwxrwxr-x  4 oracle oracle     34 Nov  5  2020 fra
+drwxrwxr-x  4 oracle oracle     43 Nov 22  2020 cdbdatabase
+drwxrwxr-x  2 oracle oracle   4096 Nov 30  2020 archlog
+drwxrwxr-x  2 oracle oracle      6 Nov 30  2020 redo
+drwxrwxr-x  2 oracle oracle      6 Nov 30  2020 controlfile
+drwxrwxrwx  3 oracle oracle    153 Dec  1  2020 backup
+drwxrwxr-x  2 oracle oracle    125 Dec  2  2020 datafile
+drwxrwxr-x  2 oracle oracle     25 Dec  2  2020 xml
+drwxr-x---  3 oracle oracle     18 Feb 11 07:27 DATA
+drwxrwxr-x  3 oracle oracle     23 Jul 16 03:10 TEST
+drwxrwxr-x. 7 oracle oinstall   80 Jul 16 03:11 app
+[oracle@node9 orab]$
+[oracle@node9 orab]$
+[oracle@node9 orab]$ cd app/
+[oracle@node9 app]$
+[oracle@node9 app]$
+[oracle@node9 app]$ ls -lrt
+total 0
+drwxrwxr-x. 3 oracle oinstall  22 Nov  3  2020 dbhome
+drwxrwxr-x  9 oracle oinstall 108 Nov 22  2020 oracle
+drwxrwx---  6 oracle oracle   103 May 14 03:55 oraInventory
+drwxrwxr-x  2 oracle oracle   125 Jul 16 03:08 backup
+drwxrwxr-x  3 oracle oracle    20 Jul 16 03:11 12.2
+[oracle@node9 app]$
+[oracle@node9 app]$
+[oracle@node9 app]$ cd 12.2/
+[oracle@node9 12.2]$
+[oracle@node9 12.2]$
+[oracle@node9 12.2]$
+[oracle@node9 12.2]$ ls -lrt
+total 0
+drwxrwxr-x 3 oracle oracle 17 Jul 16 03:11 dbhome
+[oracle@node9 12.2]$
+[oracle@node9 12.2]$
+[oracle@node9 12.2]$
+[oracle@node9 12.2]$
+[oracle@node9 12.2]$ cd dbhome/
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$ ls -lrt
+total 0
+drwxrwxr-x 3 oracle oracle 18 Jul 16 03:11 dbs
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$ cd dbs/
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$ ls -lrt
+total 0
+drwxrwxr-x 2 oracle oracle 6 Jul 16 03:11 arch
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$ cd ..
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$ cd ..
+[oracle@node9 12.2]$
+[oracle@node9 12.2]$
+[oracle@node9 12.2]$
+[oracle@node9 12.2]$ cd ..
+[oracle@node9 app]$
+[oracle@node9 app]$ cd dbhome/
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$ ls -lrt
+total 0
+drwxrwxr-x 7 oracle oinstall 117 Jan 26  2017 database
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$ cd database/
+[oracle@node9 database]$
+[oracle@node9 database]$
+[oracle@node9 database]$ ls -lrt
+total 20
+-rwxrwxr-x  1 oracle oinstall  500 Feb  6  2013 welcome.html
+drwxrwxr-x  4 oracle oinstall  234 Jan 26  2017 install
+-rwxrwxr-x  1 oracle oinstall 8771 Jan 26  2017 runInstaller
+drwxrwxr-x  2 oracle oinstall   35 Jan 26  2017 rpm
+drwxrwxr-x  2 oracle oinstall   29 Jan 26  2017 sshsetup
+drwxrwxr-x  2 oracle oinstall   61 Jan 26  2017 response
+drwxrwxr-x 14 oracle oinstall 4096 Jan 26  2017 stage
+[oracle@node9 database]$ cd ..
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$ ls -lrt
+total 0
+drwxrwxr-x 7 oracle oinstall 117 Jan 26  2017 database
+[oracle@node9 dbhome]$ rm -rf data*
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$ df -kh .
+Filesystem               Size  Used Avail Use% Mounted on
+/dev/mapper/orab-lvorab   40G   27G   14G  67% /orab
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$ df -kh .
+Filesystem               Size  Used Avail Use% Mounted on
+/dev/mapper/orab-lvorab   40G   27G   14G  67% /orab
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$
+[oracle@node9 dbhome]$ cd ..
+[oracle@node9 app]$
+[oracle@node9 app]$
+[oracle@node9 app]$
+[oracle@node9 app]$
+[oracle@node9 app]$
+[oracle@node9 app]$ ls -lrt
+total 0
+drwxrwxr-x  9 oracle oinstall 108 Nov 22  2020 oracle
+drwxrwx---  6 oracle oracle   103 May 14 03:55 oraInventory
+drwxrwxr-x  2 oracle oracle   125 Jul 16 03:08 backup
+drwxrwxr-x  3 oracle oracle    20 Jul 16 03:11 12.2
+drwxrwxr-x. 2 oracle oinstall   6 Jul 16 03:13 dbhome
+[oracle@node9 app]$
+[oracle@node9 app]$
+[oracle@node9 app]$
+[oracle@node9 app]$ env |grep ORA
+ORACLE_SID=orcl
+ORACLE_HOME=/oradata/app/oracle/product/19c/dbhome
+[oracle@node9 app]$
+[oracle@node9 app]$
+[oracle@node9 app]$
+[oracle@node9 app]$ cd /oradata/app/oracle/product/19c/dbhome/dbs
+
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$ ls -ld /orab/app/oracle/admin/TEST/adump
+ls: cannot access /orab/app/oracle/admin/TEST/adump: No such file or directory
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$ mkdir -p /orab/app/oracle/admin/TEST/adump
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$ pwd
+/oradata/app/oracle/product/19c/dbhome/dbs
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$ vi initTEST.ora
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$ pwd
+/oradata/app/oracle/product/19c/dbhome/dbs
+[oracle@node9 dbs]$ cat initTEST.ora
+*.audit_file_dest='/orab/app/oracle/admin/TEST/adump'
+*.audit_trail='db'
+*.compatible='19.0.0'
+*.control_files='/orab/TEST/datafiles/TEST/control01.ctl','/orab/TEST/datafiles/TEST/control02.ctl'
+*.db_block_size=8192
+*.db_name='TEST'
+*.diagnostic_dest='/orab/app/oracle'
+*.dispatchers='(PROTOCOL=TCP) (SERVICE=TESTXDB)'
+*.local_listener='(ADDRESS = (PROTOCOL = TCP)(HOST = NODE4)(PORT = 1621))'
+*.log_archive_dest_1='location=/orab/app/12.2/dbhome/dbs/arch'
+*.nls_language='AMERICAN'
+*.nls_territory='AMERICA'
+*.open_cursors=300
+*.pga_aggregate_target=478m
+*.processes=100
+*.remote_login_passwordfile='EXCLUSIVE'
+*.sga_target=2000m
+*.undo_tablespace='UNDOTBS1'
+
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$ sqlplus / as sysdba
+
+SQL*Plus: Release 19.0.0.0.0 - Production on Sun Jul 16 03:18:30 2023
+Version 19.9.0.0.0
+
+Copyright (c) 1982, 2020, Oracle.  All rights reserved.
+
+Connected to an idle instance.
+
+SQL> exit
+Disconnected
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$ env |grep ORA
+ORACLE_SID=orcl
+ORACLE_HOME=/oradata/app/oracle/product/19c/dbhome
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$ export ORACLE_SID=TEST
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$ sqlplus / as sysdba
+
+SQL*Plus: Release 19.0.0.0.0 - Production on Sun Jul 16 03:18:57 2023
+Version 19.9.0.0.0
+
+Copyright (c) 1982, 2020, Oracle.  All rights reserved.
+
+Connected to an idle instance.
+
+SQL> STARTUP NOMOUNT;
+ORACLE instance started.
+
+Total System Global Area 2097149856 bytes
+Fixed Size                  8898464 bytes
+Variable Size             469762048 bytes
+Database Buffers         1610612736 bytes
+Redo Buffers                7876608 bytes
+SQL>
+SQL>
+SQL>
+SQL>
+SQL> EXIT
+Disconnected from Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.9.0.0.0
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$
+[oracle@node9 dbs]$ cd /orab/app/backup/
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$ ls -lrt
+total 1252440
+-rw-rw---- 1 root root  10682368 Jul 15 03:04 db_0h219oal
+-rw-rw---- 1 root root    114688 Jul 15 03:04 db_0i219oao
+-rw-rw---- 1 root root   7438336 Jul 15 03:05 db_0g219oal
+-rw-rw---- 1 root root 437936128 Jul 15 03:05 db_0f219oal
+-rw-rw---- 1 root root 815644672 Jul 15 03:05 db_0e219oal
+-rw-rw---- 1 root root  10682368 Jul 15 03:05 control_0j219obs
+[oracle@node9 backup]$ rman target /
+
+Recovery Manager: Release 19.0.0.0.0 - Production on Sun Jul 16 03:20:47 2023
+Version 19.9.0.0.0
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+connected to target database: TEST (not mounted)
+
+RMAN>
+
+RMAN>
+
+RMAN> restore standby controlfile from '/orab/app/backup/control_0j219obs';
+
+Starting restore at 16-JUL-23
+using target database control file instead of recovery catalog
+allocated channel: ORA_DISK_1
+channel ORA_DISK_1: SID=95 device type=DISK
+
+RMAN-00571: ===========================================================
+RMAN-00569: =============== ERROR MESSAGE STACK FOLLOWS ===============
+RMAN-00571: ===========================================================
+RMAN-03002: failure of restore command at 07/16/2023 03:21:24
+RMAN-06172: no AUTOBACKUP found or specified handle is not a valid copy or piece
+
+RMAN> exit
+
+
+Recovery Manager complete.
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$ exit
+logout
+[root@node9 ~]#
+[root@node9 ~]#
+[root@node9 ~]# cd /orab/app/backup/
+[root@node9 backup]#
+[root@node9 backup]#
+[root@node9 backup]#
+[root@node9 backup]# ls -lrt
+total 1252440
+-rw-rw---- 1 root root  10682368 Jul 15 03:04 db_0h219oal
+-rw-rw---- 1 root root    114688 Jul 15 03:04 db_0i219oao
+-rw-rw---- 1 root root   7438336 Jul 15 03:05 db_0g219oal
+-rw-rw---- 1 root root 437936128 Jul 15 03:05 db_0f219oal
+-rw-rw---- 1 root root 815644672 Jul 15 03:05 db_0e219oal
+-rw-rw---- 1 root root  10682368 Jul 15 03:05 control_0j219obs
+[root@node9 backup]#
+[root@node9 backup]#
+[root@node9 backup]#
+[root@node9 backup]# chown oracle^C
+[root@node9 backup]#
+[root@node9 backup]#
+[root@node9 backup]# id oracle
+uid=1000(oracle) gid=1000(oracle) groups=1000(oracle),1001(dba)
+[root@node9 backup]# chown oracle:oracle *
+[root@node9 backup]#
+[root@node9 backup]#
+[root@node9 backup]# cd ..
+[root@node9 app]#
+[root@node9 app]#
+[root@node9 app]# ls -lrt
+total 0
+drwxrwxr-x  9 oracle oinstall 108 Nov 22  2020 oracle
+drwxrwx---  6 oracle oracle   103 May 14 03:55 oraInventory
+drwxrwxr-x  2 oracle oracle   125 Jul 16 03:08 backup
+drwxrwxr-x  3 oracle oracle    20 Jul 16 03:11 12.2
+drwxrwxr-x. 2 oracle oinstall   6 Jul 16 03:13 dbhome
+[root@node9 app]#
+[root@node9 app]#
+[root@node9 app]#
+[root@node9 app]# su - oracle
+Last login: Sun Jul 16 02:50:26 EDT 2023 on pts/0
+[oracle@node9 ~]$
+[oracle@node9 ~]$
+[oracle@node9 ~]$
+[oracle@node9 ~]$ cat initTEST.ora^M^C
+[oracle@node9 ~]$
+[oracle@node9 ~]$
+[oracle@node9 ~]$
+[oracle@node9 ~]$ rman target /
+
+Recovery Manager: Release 19.0.0.0.0 - Production on Sun Jul 16 03:22:14 2023
+Version 19.9.0.0.0
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+connected to target database (not started)
+
+RMAN> restore standby controlfile from '/orab/app/backup/control_0j219obs';
+
+Starting restore at 16-JUL-23
+using target database control file instead of recovery catalog
+RMAN-00571: ===========================================================
+RMAN-00569: =============== ERROR MESSAGE STACK FOLLOWS ===============
+RMAN-00571: ===========================================================
+RMAN-03002: failure of restore command at 07/16/2023 03:22:22
+RMAN-12010: automatic channel allocation initialization failed
+RMAN-06403: could not obtain a fully authorized session
+ORA-01034: ORACLE not available
+ORA-27101: shared memory realm does not exist
+Linux-x86_64 Error: 2: No such file or directory
+Additional information: 4376
+Additional information: 363074139
+
+RMAN> exit
+
+
+Recovery Manager complete.
+[oracle@node9 ~]$
+[oracle@node9 ~]$
+[oracle@node9 ~]$ env |grep ORA
+ORACLE_SID=orcl
+ORACLE_HOME=/oradata/app/oracle/product/19c/dbhome
+[oracle@node9 ~]$
+[oracle@node9 ~]$
+[oracle@node9 ~]$ export ORACLE_SID=TEST
+[oracle@node9 ~]$
+[oracle@node9 ~]$
+[oracle@node9 ~]$ env |grep ORA
+ORACLE_SID=TEST
+ORACLE_HOME=/oradata/app/oracle/product/19c/dbhome
+[oracle@node9 ~]$ rman target /
+
+Recovery Manager: Release 19.0.0.0.0 - Production on Sun Jul 16 03:23:02 2023
+Version 19.9.0.0.0
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+connected to target database: TEST (not mounted)
+
+RMAN> restore standby controlfile from '/orab/app/backup/control_0j219obs';
+
+Starting restore at 16-JUL-23
+using target database control file instead of recovery catalog
+allocated channel: ORA_DISK_1
+channel ORA_DISK_1: SID=95 device type=DISK
+
+channel ORA_DISK_1: restoring control file
+channel ORA_DISK_1: restore complete, elapsed time: 00:00:03
+output file name=/orab/TEST/datafiles/TEST/control01.ctl
+output file name=/orab/TEST/datafiles/TEST/control02.ctl
+Finished restore at 16-JUL-23
+
+RMAN>
+
+RMAN>
+
+RMAN> sql 'alter database mount;';
+
+sql statement: alter database mount;
+RMAN-00571: ===========================================================
+RMAN-00569: =============== ERROR MESSAGE STACK FOLLOWS ===============
+RMAN-00571: ===========================================================
+RMAN-03009: failure of sql command on default channel at 07/16/2023 03:23:43
+RMAN-11003: failure during parse/execution of SQL statement: alter database mount;
+ORA-02232: invalid MOUNT mode
+
+RMAN> sql 'alter database mount';
+
+sql statement: alter database mount
+released channel: ORA_DISK_1
+
+RMAN> list backup;
+
+
+List of Backup Sets
+===================
+
+
+BS Key  Type LV Size       Device Type Elapsed Time Completion Time
+------- ---- -- ---------- ----------- ------------ ---------------
+1       Full    5.91M      DISK        00:00:48     09-JUL-23
+        BP Key: 1   Status: AVAILABLE  Compressed: NO  Tag: TAG20230709T041910
+        Piece Name: /orab/app/12.2/backup/db_0320q2du
+  List of Datafiles in backup set 1
+  File LV Type Ckp SCN    Ckp Time  Abs Fuz SCN Sparse Name
+  ---- -- ---- ---------- --------- ----------- ------ ----
+  4       Full 2610642    09-JUL-23              NO    /orab/TEST/datafiles/TEST/undotbs01.dbf
+  7       Full 2610642    09-JUL-23              NO    /orab/TEST/datafiles/TEST/users01.dbf
+
+BS Key  Type LV Size       Device Type Elapsed Time Completion Time
+------- ---- -- ---------- ----------- ------------ ---------------
+2       Full    413.14M    DISK        00:01:00     09-JUL-23
+        BP Key: 2   Status: AVAILABLE  Compressed: NO  Tag: TAG20230709T041910
+        Piece Name: /orab/app/12.2/backup/db_0220q2du
+  List of Datafiles in backup set 2
+  File LV Type Ckp SCN    Ckp Time  Abs Fuz SCN Sparse Name
+  ---- -- ---- ---------- --------- ----------- ------ ----
+  2       Full 2610642    09-JUL-23              NO    /orab/TEST/datafiles/TEST/test_tbs1.dbf
+  3       Full 2610642    09-JUL-23              NO    /orab/TEST/datafiles/TEST/sysaux01.dbf
+
+BS Key  Type LV Size       Device Type Elapsed Time Completion Time
+------- ---- -- ---------- ----------- ------------ ---------------
+3       Full    777.84M    DISK        00:01:03     09-JUL-23
+        BP Key: 3   Status: AVAILABLE  Compressed: NO  Tag: TAG20230709T041910
+        Piece Name: /orab/app/12.2/backup/db_0120q2du
+  List of Datafiles in backup set 3
+  File LV Type Ckp SCN    Ckp Time  Abs Fuz SCN Sparse Name
+  ---- -- ---- ---------- --------- ----------- ------ ----
+  1       Full 2610642    09-JUL-23              NO    /orab/TEST/datafiles/TEST/system01.dbf
+  5       Full 2610642    09-JUL-23              NO    /orab/TEST/datafiles/TEST/test_tbs.dbf
+
+BS Key  Type LV Size       Device Type Elapsed Time Completion Time
+------- ---- -- ---------- ----------- ------------ ---------------
+4       Full    10.17M     DISK        00:00:01     09-JUL-23
+        BP Key: 4   Status: AVAILABLE  Compressed: NO  Tag: TAG20230709T042017
+        Piece Name: /orab/app/12.2/backup/control_0420q2g1
+  Control File Included: Ckp SCN: 2610642      Ckp time: 09-JUL-23
+
+BS Key  Type LV Size       Device Type Elapsed Time Completion Time
+------- ---- -- ---------- ----------- ------------ ---------------
+5       Full    10.20M     DISK        00:00:00     09-JUL-23
+        BP Key: 5   Status: AVAILABLE  Compressed: NO  Tag: TAG20230709T042019
+        Piece Name: /orab/app/12.2/dbhome/dbs/c-2437345307-20230709-00
+  SPFILE Included: Modification time: 09-JUL-23
+  SPFILE db_unique_name: TEST
+  Control File Included: Ckp SCN: 2610642      Ckp time: 09-JUL-23
+
+BS Key  Type LV Size       Device Type Elapsed Time Completion Time
+------- ---- -- ---------- ----------- ------------ ---------------
+6       Full    10.17M     DISK        00:00:02     09-JUL-23
+        BP Key: 6   Status: AVAILABLE  Compressed: NO  Tag: TAG20230709T042447
+        Piece Name: /orab/app/12.2/backup/db_0920q2of
+  Control File Included: Ckp SCN: 2610642      Ckp time: 09-JUL-23
+
+BS Key  Type LV Size       Device Type Elapsed Time Completion Time
+------- ---- -- ---------- ----------- ------------ ---------------
+7       Full    5.91M      DISK        00:00:02     09-JUL-23
+        BP Key: 7   Status: AVAILABLE  Compressed: NO  Tag: TAG20230709T042447
+        Piece Name: /orab/app/12.2/backup/db_0820q2of
+  List of Datafiles in backup set 7
+  File LV Type Ckp SCN    Ckp Time  Abs Fuz SCN Sparse Name
+  ---- -- ---- ---------- --------- ----------- ------ ----
+  4       Full 2610642    09-JUL-23              NO    /orab/TEST/datafiles/TEST/undotbs01.dbf
+  7       Full 2610642    09-JUL-23              NO    /orab/TEST/datafiles/TEST/users01.dbf
+
+BS Key  Type LV Size       Device Type Elapsed Time Completion Time
+------- ---- -- ---------- ----------- ------------ ---------------
+8       Full    413.14M    DISK        00:00:03     09-JUL-23
+        BP Key: 8   Status: AVAILABLE  Compressed: NO  Tag: TAG20230709T042447
+        Piece Name: /orab/app/12.2/backup/db_0720q2of
+  List of Datafiles in backup set 8
+  File LV Type Ckp SCN    Ckp Time  Abs Fuz SCN Sparse Name
+  ---- -- ---- ---------- --------- ----------- ------ ----
+  2       Full 2610642    09-JUL-23              NO    /orab/TEST/datafiles/TEST/test_tbs1.dbf
+  3       Full 2610642    09-JUL-23              NO    /orab/TEST/datafiles/TEST/sysaux01.dbf
+
+BS Key  Type LV Size       Device Type Elapsed Time Completion Time
+------- ---- -- ---------- ----------- ------------ ---------------
+9       Full    96.00K     DISK        00:00:00     09-JUL-23
+        BP Key: 9   Status: AVAILABLE  Compressed: NO  Tag: TAG20230709T042447
+        Piece Name: /orab/app/12.2/backup/db_0a20q2oi
+  SPFILE Included: Modification time: 09-JUL-23
+  SPFILE db_unique_name: TEST
+
+BS Key  Type LV Size       Device Type Elapsed Time Completion Time
+------- ---- -- ---------- ----------- ------------ ---------------
+10      Full    777.84M    DISK        00:00:03     09-JUL-23
+        BP Key: 10   Status: AVAILABLE  Compressed: NO  Tag: TAG20230709T042447
+        Piece Name: /orab/app/12.2/backup/db_0620q2of
+  List of Datafiles in backup set 10
+  File LV Type Ckp SCN    Ckp Time  Abs Fuz SCN Sparse Name
+  ---- -- ---- ---------- --------- ----------- ------ ----
+  1       Full 2610642    09-JUL-23              NO    /orab/TEST/datafiles/TEST/system01.dbf
+  5       Full 2610642    09-JUL-23              NO    /orab/TEST/datafiles/TEST/test_tbs.dbf
+
+BS Key  Type LV Size       Device Type Elapsed Time Completion Time
+------- ---- -- ---------- ----------- ------------ ---------------
+11      Full    10.17M     DISK        00:00:01     09-JUL-23
+        BP Key: 11   Status: AVAILABLE  Compressed: NO  Tag: TAG20230709T042451
+        Piece Name: /orab/app/12.2/backup/control_0b20q2oj
+  Control File Included: Ckp SCN: 2610642      Ckp time: 09-JUL-23
+
+BS Key  Type LV Size       Device Type Elapsed Time Completion Time
+------- ---- -- ---------- ----------- ------------ ---------------
+12      Full    1.05M      DISK        00:00:00     09-JUL-23
+        BP Key: 12   Status: AVAILABLE  Compressed: NO  Tag: TAG20230709T042804
+        Piece Name: /orab/app/12.2/backup/datafile2_0c20q2uk
+  List of Datafiles in backup set 12
+  File LV Type Ckp SCN    Ckp Time  Abs Fuz SCN Sparse Name
+  ---- -- ---- ---------- --------- ----------- ------ ----
+  2       Full 2610642    09-JUL-23              NO    /orab/TEST/datafiles/TEST/test_tbs1.dbf
+
+BS Key  Type LV Size       Device Type Elapsed Time Completion Time
+------- ---- -- ---------- ----------- ------------ ---------------
+13      Full    2.24M      DISK        00:00:00     09-JUL-23
+        BP Key: 13   Status: AVAILABLE  Compressed: NO  Tag: TAG20230709T043113
+        Piece Name: /orab/app/12.2/backup/test_tbs_0d20q34h
+  List of Datafiles in backup set 13
+  File LV Type Ckp SCN    Ckp Time  Abs Fuz SCN Sparse Name
+  ---- -- ---- ---------- --------- ----------- ------ ----
+  2       Full 2610642    09-JUL-23              NO    /orab/TEST/datafiles/TEST/test_tbs1.dbf
+  5       Full 2610642    09-JUL-23              NO    /orab/TEST/datafiles/TEST/test_tbs.dbf
+
+BS Key  Type LV Size       Device Type Elapsed Time Completion Time
+------- ---- -- ---------- ----------- ------------ ---------------
+14      Full    10.17M     DISK        00:00:02     15-JUL-23
+        BP Key: 14   Status: AVAILABLE  Compressed: NO  Tag: TAG20230715T030452
+        Piece Name: /orab/app/12.2/backup/db_0h219oal
+  Control File Included: Ckp SCN: 2615374      Ckp time: 15-JUL-23
+
+BS Key  Type LV Size       Device Type Elapsed Time Completion Time
+------- ---- -- ---------- ----------- ------------ ---------------
+15      Full    96.00K     DISK        00:00:00     15-JUL-23
+        BP Key: 15   Status: AVAILABLE  Compressed: NO  Tag: TAG20230715T030452
+        Piece Name: /orab/app/12.2/backup/db_0i219oao
+  SPFILE Included: Modification time: 15-JUL-23
+  SPFILE db_unique_name: TEST
+
+BS Key  Type LV Size       Device Type Elapsed Time Completion Time
+------- ---- -- ---------- ----------- ------------ ---------------
+16      Full    7.09M      DISK        00:00:10     15-JUL-23
+        BP Key: 16   Status: AVAILABLE  Compressed: NO  Tag: TAG20230715T030452
+        Piece Name: /orab/app/12.2/backup/db_0g219oal
+  List of Datafiles in backup set 16
+  File LV Type Ckp SCN    Ckp Time  Abs Fuz SCN Sparse Name
+  ---- -- ---- ---------- --------- ----------- ------ ----
+  4       Full 2615374    15-JUL-23              NO    /orab/TEST/datafiles/TEST/undotbs01.dbf
+  7       Full 2615374    15-JUL-23              NO    /orab/TEST/datafiles/TEST/users01.dbf
+
+BS Key  Type LV Size       Device Type Elapsed Time Completion Time
+------- ---- -- ---------- ----------- ------------ ---------------
+17      Full    417.64M    DISK        00:00:20     15-JUL-23
+        BP Key: 17   Status: AVAILABLE  Compressed: NO  Tag: TAG20230715T030452
+        Piece Name: /orab/app/12.2/backup/db_0f219oal
+  List of Datafiles in backup set 17
+  File LV Type Ckp SCN    Ckp Time  Abs Fuz SCN Sparse Name
+  ---- -- ---- ---------- --------- ----------- ------ ----
+  2       Full 2615373    15-JUL-23              NO    /orab/TEST/datafiles/TEST/test_tbs1.dbf
+  3       Full 2615373    15-JUL-23              NO    /orab/TEST/datafiles/TEST/sysaux01.dbf
+
+BS Key  Type LV Size       Device Type Elapsed Time Completion Time
+------- ---- -- ---------- ----------- ------------ ---------------
+18      Full    777.85M    DISK        00:00:29     15-JUL-23
+        BP Key: 18   Status: AVAILABLE  Compressed: NO  Tag: TAG20230715T030452
+        Piece Name: /orab/app/12.2/backup/db_0e219oal
+  List of Datafiles in backup set 18
+  File LV Type Ckp SCN    Ckp Time  Abs Fuz SCN Sparse Name
+  ---- -- ---- ---------- --------- ----------- ------ ----
+  1       Full 2615372    15-JUL-23              NO    /orab/TEST/datafiles/TEST/system01.dbf
+  5       Full 2615372    15-JUL-23              NO    /orab/TEST/datafiles/TEST/test_tbs.dbf
+
+RMAN> exit
+
+
+Recovery Manager complete.
+[oracle@node9 ~]$
+[oracle@node9 ~]$
+[oracle@node9 ~]$
+[oracle@node9 ~]$ cd /orab/app/backup/
+[oracle@node9 backup]$
+[oracle@node9 backup]$ ls -lrt
+total 1252440
+-rw-rw---- 1 oracle oracle  10682368 Jul 15 03:04 db_0h219oal
+-rw-rw---- 1 oracle oracle    114688 Jul 15 03:04 db_0i219oao
+-rw-rw---- 1 oracle oracle   7438336 Jul 15 03:05 db_0g219oal
+-rw-rw---- 1 oracle oracle 437936128 Jul 15 03:05 db_0f219oal
+-rw-rw---- 1 oracle oracle 815644672 Jul 15 03:05 db_0e219oal
+-rw-rw---- 1 oracle oracle  10682368 Jul 15 03:05 control_0j219obs
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$ rman target /
+
+Recovery Manager: Release 19.0.0.0.0 - Production on Sun Jul 16 03:25:14 2023
+Version 19.9.0.0.0
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+connected to target database: TEST (DBID=2437345307, not open)
+
+RMAN> restore database;
+
+Starting restore at 16-JUL-23
+using target database control file instead of recovery catalog
+allocated channel: ORA_DISK_1
+channel ORA_DISK_1: SID=97 device type=DISK
+
+channel ORA_DISK_1: starting datafile backup set restore
+channel ORA_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_DISK_1: restoring datafile 00004 to /orab/TEST/datafiles/TEST/undotbs01.dbf
+channel ORA_DISK_1: restoring datafile 00007 to /orab/TEST/datafiles/TEST/users01.dbf
+channel ORA_DISK_1: reading from backup piece /orab/app/12.2/backup/db_0g219oal
+channel ORA_DISK_1: ORA-19870: error while restoring backup piece /orab/app/12.2/backup/db_0g219oal
+ORA-19505: failed to identify file "/orab/app/12.2/backup/db_0g219oal"
+ORA-27037: unable to obtain file status
+Linux-x86_64 Error: 2: No such file or directory
+Additional information: 7
+
+channel ORA_DISK_1: starting datafile backup set restore
+channel ORA_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_DISK_1: restoring datafile 00002 to /orab/TEST/datafiles/TEST/test_tbs1.dbf
+channel ORA_DISK_1: restoring datafile 00003 to /orab/TEST/datafiles/TEST/sysaux01.dbf
+channel ORA_DISK_1: reading from backup piece /orab/app/12.2/backup/db_0f219oal
+channel ORA_DISK_1: ORA-19870: error while restoring backup piece /orab/app/12.2/backup/db_0f219oal
+ORA-19505: failed to identify file "/orab/app/12.2/backup/db_0f219oal"
+ORA-27037: unable to obtain file status
+Linux-x86_64 Error: 2: No such file or directory
+Additional information: 7
+
+channel ORA_DISK_1: starting datafile backup set restore
+channel ORA_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_DISK_1: restoring datafile 00001 to /orab/TEST/datafiles/TEST/system01.dbf
+channel ORA_DISK_1: restoring datafile 00005 to /orab/TEST/datafiles/TEST/test_tbs.dbf
+channel ORA_DISK_1: reading from backup piece /orab/app/12.2/backup/db_0e219oal
+channel ORA_DISK_1: ORA-19870: error while restoring backup piece /orab/app/12.2/backup/db_0e219oal
+ORA-19505: failed to identify file "/orab/app/12.2/backup/db_0e219oal"
+ORA-27037: unable to obtain file status
+Linux-x86_64 Error: 2: No such file or directory
+Additional information: 7
+
+failover to previous backup
+
+channel ORA_DISK_1: starting datafile backup set restore
+channel ORA_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_DISK_1: restoring datafile 00004 to /orab/TEST/datafiles/TEST/undotbs01.dbf
+channel ORA_DISK_1: restoring datafile 00007 to /orab/TEST/datafiles/TEST/users01.dbf
+channel ORA_DISK_1: reading from backup piece /orab/app/12.2/backup/db_0820q2of
+channel ORA_DISK_1: ORA-19870: error while restoring backup piece /orab/app/12.2/backup/db_0820q2of
+ORA-19505: failed to identify file "/orab/app/12.2/backup/db_0820q2of"
+ORA-27037: unable to obtain file status
+Linux-x86_64 Error: 2: No such file or directory
+Additional information: 7
+
+channel ORA_DISK_1: starting datafile backup set restore
+channel ORA_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_DISK_1: restoring datafile 00001 to /orab/TEST/datafiles/TEST/system01.dbf
+channel ORA_DISK_1: reading from backup piece /orab/app/12.2/backup/db_0620q2of
+channel ORA_DISK_1: ORA-19870: error while restoring backup piece /orab/app/12.2/backup/db_0620q2of
+ORA-19505: failed to identify file "/orab/app/12.2/backup/db_0620q2of"
+ORA-27037: unable to obtain file status
+Linux-x86_64 Error: 2: No such file or directory
+Additional information: 7
+
+channel ORA_DISK_1: starting datafile backup set restore
+channel ORA_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_DISK_1: restoring datafile 00003 to /orab/TEST/datafiles/TEST/sysaux01.dbf
+channel ORA_DISK_1: reading from backup piece /orab/app/12.2/backup/db_0720q2of
+channel ORA_DISK_1: ORA-19870: error while restoring backup piece /orab/app/12.2/backup/db_0720q2of
+ORA-19505: failed to identify file "/orab/app/12.2/backup/db_0720q2of"
+ORA-27037: unable to obtain file status
+Linux-x86_64 Error: 2: No such file or directory
+Additional information: 7
+
+channel ORA_DISK_1: starting datafile backup set restore
+channel ORA_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_DISK_1: restoring datafile 00002 to /orab/TEST/datafiles/TEST/test_tbs1.dbf
+channel ORA_DISK_1: restoring datafile 00005 to /orab/TEST/datafiles/TEST/test_tbs.dbf
+channel ORA_DISK_1: reading from backup piece /orab/app/12.2/backup/test_tbs_0d20q34h
+channel ORA_DISK_1: ORA-19870: error while restoring backup piece /orab/app/12.2/backup/test_tbs_0d20q34h
+ORA-19505: failed to identify file "/orab/app/12.2/backup/test_tbs_0d20q34h"
+ORA-27037: unable to obtain file status
+Linux-x86_64 Error: 2: No such file or directory
+Additional information: 7
+
+failover to previous backup
+
+channel ORA_DISK_1: starting datafile backup set restore
+channel ORA_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_DISK_1: restoring datafile 00004 to /orab/TEST/datafiles/TEST/undotbs01.dbf
+channel ORA_DISK_1: restoring datafile 00007 to /orab/TEST/datafiles/TEST/users01.dbf
+channel ORA_DISK_1: reading from backup piece /orab/app/12.2/backup/db_0320q2du
+channel ORA_DISK_1: ORA-19870: error while restoring backup piece /orab/app/12.2/backup/db_0320q2du
+ORA-19505: failed to identify file "/orab/app/12.2/backup/db_0320q2du"
+ORA-27037: unable to obtain file status
+Linux-x86_64 Error: 2: No such file or directory
+Additional information: 7
+
+channel ORA_DISK_1: starting datafile backup set restore
+channel ORA_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_DISK_1: restoring datafile 00003 to /orab/TEST/datafiles/TEST/sysaux01.dbf
+channel ORA_DISK_1: reading from backup piece /orab/app/12.2/backup/db_0220q2du
+channel ORA_DISK_1: ORA-19870: error while restoring backup piece /orab/app/12.2/backup/db_0220q2du
+ORA-19505: failed to identify file "/orab/app/12.2/backup/db_0220q2du"
+ORA-27037: unable to obtain file status
+Linux-x86_64 Error: 2: No such file or directory
+Additional information: 7
+
+channel ORA_DISK_1: starting datafile backup set restore
+channel ORA_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_DISK_1: restoring datafile 00001 to /orab/TEST/datafiles/TEST/system01.dbf
+channel ORA_DISK_1: reading from backup piece /orab/app/12.2/backup/db_0120q2du
+channel ORA_DISK_1: ORA-19870: error while restoring backup piece /orab/app/12.2/backup/db_0120q2du
+ORA-19505: failed to identify file "/orab/app/12.2/backup/db_0120q2du"
+ORA-27037: unable to obtain file status
+Linux-x86_64 Error: 2: No such file or directory
+Additional information: 7
+
+channel ORA_DISK_1: starting datafile backup set restore
+channel ORA_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_DISK_1: restoring datafile 00005 to /orab/TEST/datafiles/TEST/test_tbs.dbf
+channel ORA_DISK_1: reading from backup piece /orab/app/12.2/backup/db_0620q2of
+channel ORA_DISK_1: ORA-19870: error while restoring backup piece /orab/app/12.2/backup/db_0620q2of
+ORA-19505: failed to identify file "/orab/app/12.2/backup/db_0620q2of"
+ORA-27037: unable to obtain file status
+Linux-x86_64 Error: 2: No such file or directory
+Additional information: 7
+
+channel ORA_DISK_1: starting datafile backup set restore
+channel ORA_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_DISK_1: restoring datafile 00002 to /orab/TEST/datafiles/TEST/test_tbs1.dbf
+channel ORA_DISK_1: reading from backup piece /orab/app/12.2/backup/datafile2_0c20q2uk
+channel ORA_DISK_1: ORA-19870: error while restoring backup piece /orab/app/12.2/backup/datafile2_0c20q2uk
+ORA-19505: failed to identify file "/orab/app/12.2/backup/datafile2_0c20q2uk"
+ORA-27037: unable to obtain file status
+Linux-x86_64 Error: 2: No such file or directory
+Additional information: 7
+
+failover to previous backup
+
+RMAN-00571: ===========================================================
+RMAN-00569: =============== ERROR MESSAGE STACK FOLLOWS ===============
+RMAN-00571: ===========================================================
+RMAN-03002: failure of restore command at 07/16/2023 03:25:19
+RMAN-06026: some targets not found - aborting restore
+RMAN-06023: no backup or copy of datafile 7 found to restore
+RMAN-06023: no backup or copy of datafile 4 found to restore
+RMAN-06023: no backup or copy of datafile 3 found to restore
+RMAN-06023: no backup or copy of datafile 1 found to restore
+
+RMAN> exit
+
+
+Recovery Manager complete.
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$ pwd
+/orab/app/backup
+[oracle@node9 backup]$ rman target /
+
+Recovery Manager: Release 19.0.0.0.0 - Production on Sun Jul 16 03:26:50 2023
+Version 19.9.0.0.0
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+connected to target database: TEST (DBID=2437345307, not open)
+
+RMAN> catalog start with '/orab/app/backup';
+
+using target database control file instead of recovery catalog
+searching for all files that match the pattern /orab/app/backup
+
+List of Files Unknown to the Database
+=====================================
+File Name: /orab/app/backup/db_0e219oal
+File Name: /orab/app/backup/db_0f219oal
+File Name: /orab/app/backup/db_0g219oal
+File Name: /orab/app/backup/db_0h219oal
+File Name: /orab/app/backup/db_0i219oao
+File Name: /orab/app/backup/control_0j219obs
+
+Do you really want to catalog the above files (enter YES or NO)? yes
+cataloging files...
+cataloging done
+
+List of Cataloged Files
+=======================
+File Name: /orab/app/backup/db_0e219oal
+File Name: /orab/app/backup/db_0f219oal
+File Name: /orab/app/backup/db_0g219oal
+File Name: /orab/app/backup/db_0h219oal
+File Name: /orab/app/backup/db_0i219oao
+File Name: /orab/app/backup/control_0j219obs
+
+RMAN>
+
+RMAN>
+
+RMAN> restore database;
+
+Starting restore at 16-JUL-23
+allocated channel: ORA_DISK_1
+channel ORA_DISK_1: SID=11 device type=DISK
+
+channel ORA_DISK_1: starting datafile backup set restore
+channel ORA_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_DISK_1: restoring datafile 00004 to /orab/TEST/datafiles/TEST/undotbs01.dbf
+channel ORA_DISK_1: restoring datafile 00007 to /orab/TEST/datafiles/TEST/users01.dbf
+channel ORA_DISK_1: reading from backup piece /orab/app/12.2/backup/db_0g219oal
+channel ORA_DISK_1: errors found reading piece handle=/orab/app/12.2/backup/db_0g219oal
+channel ORA_DISK_1: failover to piece handle=/orab/app/backup/db_0g219oal tag=TAG20230715T030452
+channel ORA_DISK_1: restored backup piece 1
+channel ORA_DISK_1: restore complete, elapsed time: 00:00:15
+channel ORA_DISK_1: starting datafile backup set restore
+channel ORA_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_DISK_1: restoring datafile 00002 to /orab/TEST/datafiles/TEST/test_tbs1.dbf
+channel ORA_DISK_1: restoring datafile 00003 to /orab/TEST/datafiles/TEST/sysaux01.dbf
+channel ORA_DISK_1: reading from backup piece /orab/app/12.2/backup/db_0f219oal
+channel ORA_DISK_1: errors found reading piece handle=/orab/app/12.2/backup/db_0f219oal
+channel ORA_DISK_1: failover to piece handle=/orab/app/backup/db_0f219oal tag=TAG20230715T030452
+channel ORA_DISK_1: restored backup piece 1
+channel ORA_DISK_1: restore complete, elapsed time: 00:00:25
+channel ORA_DISK_1: starting datafile backup set restore
+channel ORA_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_DISK_1: restoring datafile 00001 to /orab/TEST/datafiles/TEST/system01.dbf
+channel ORA_DISK_1: restoring datafile 00005 to /orab/TEST/datafiles/TEST/test_tbs.dbf
+channel ORA_DISK_1: reading from backup piece /orab/app/12.2/backup/db_0e219oal
+channel ORA_DISK_1: errors found reading piece handle=/orab/app/12.2/backup/db_0e219oal
+channel ORA_DISK_1: failover to piece handle=/orab/app/backup/db_0e219oal tag=TAG20230715T030452
+channel ORA_DISK_1: restored backup piece 1
+channel ORA_DISK_1: restore complete, elapsed time: 00:00:45
+Finished restore at 16-JUL-23
+
+RMAN>
+
+RMAN>
+
+RMAN> exit
+
+
+Recovery Manager complete.
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$ sqlpus / as sysdba
+-bash: sqlpus: command not found
+[oracle@node9 backup]$
+[oracle@node9 backup]$
+[oracle@node9 backup]$ sqlplus / as sysdba
+
+SQL*Plus: Release 19.0.0.0.0 - Production on Sun Jul 16 03:34:45 2023
+Version 19.9.0.0.0
+
+Copyright (c) 1982, 2020, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.9.0.0.0
+
+SQL>
+SQL>
+SQL>
+SQL>
+SQL>
+SQL>
+SQL>
+SQL>
+SQL> select * from v$recover_file;
+
+no rows selected
+
+SQL>
+SQL>
+SQL> select name,open_mode,controlfile_type from v$database;
+
+NAME      OPEN_MODE            CONTROL
+--------- -------------------- -------
+TEST      MOUNTED              STANDBY
+
+SQL> !ip r l
+default via 192.168.137.1 dev ens33  proto static  metric 100
+192.168.122.0/24 dev virbr0  proto kernel  scope link  src 192.168.122.1
+192.168.137.0/24 dev ens33  proto kernel  scope link  src 192.168.137.9  metric 100
+
+SQL> !env |grep ORA
+ORACLE_SID=TEST
+ORACLE_HOME=/oradata/app/oracle/product/19c/dbhome
+
+SQL>
+SQL>
+SQL>
+SQL> exit
+Disconnected from Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.9.0.0.0
+[oracle@node9 backup]$
+[oracle@node9 backup]$ exit
+logout
+[root@node9 app]#
+[root@node9 app]#
+[root@node9 app]# cd /oradata/app/oracle/product/19c/dbhome/dbs
+[root@node9 dbs]#
+[root@node9 dbs]#
+[root@node9 dbs]# ls -lrt
+total 84
+-rw-r--r-- 1 oracle oracle 3079 May 14  2015 init.ora
+-rw-r----- 1 oracle oracle   24 Nov 30  2020 lkORCL
+-rw-r----- 1 oracle oracle 2048 Nov 30  2020 orapworcl
+-rw-rw-r-- 1 oracle oracle 1513 Nov 30  2020 pfilecdb.ora
+-rw-r----- 1 oracle oracle 4608 Nov 30  2020 spfiletestP.ora
+-rw-rw-r-- 1 oracle oracle    1 Nov 30  2020 bash_profile
+-rw-rw---- 1 oracle oracle 1544 Nov 30  2020 hc_testP.dat
+-rw-rw---- 1 oracle oracle   24 Dec  1  2020 lkCDB
+-rw-rw---- 1 oracle oracle 1544 Feb 11 06:27 hc_orcl.dat
+-rw-rw---- 1 oracle oracle 4608 Feb 11 06:27 spfileorcl.ora
+-rw-r----- 1 oracle oracle   24 Feb 11 07:27 lkTEST
+-rw-r----- 1 oracle oracle 2048 Feb 11 07:29 orapwTest1
+-rw-r----- 1 oracle oracle 3584 May 14 03:55 spfileTest1.ora
+-rw-rw-r-- 1 oracle oracle 1041 May 14 04:14 initTest1.ora
+-rw-rw---- 1 oracle oracle 1544 May 14 05:00 hc_Test1.dat
+-rw-rw-r-- 1 oracle oracle  661 Jul 16 03:17 initTEST.ora
+-rw-rw---- 1 oracle oracle 1544 Jul 16 03:23 hc_TEST.dat
+-rw-r----- 1 root   root   6144 Jul 16 03:41 orapwTEST
+[root@node9 dbs]#
+[root@node9 dbs]#
+[root@node9 dbs]#
+[root@node9 dbs]#
+[root@node9 dbs]# chown oracle:oracle orapwTEST
+[root@node9 dbs]#
+[root@node9 dbs]#
+[root@node9 dbs]# ls -lrt
+total 84
+-rw-r--r-- 1 oracle oracle 3079 May 14  2015 init.ora
+-rw-r----- 1 oracle oracle   24 Nov 30  2020 lkORCL
+-rw-r----- 1 oracle oracle 2048 Nov 30  2020 orapworcl
+-rw-rw-r-- 1 oracle oracle 1513 Nov 30  2020 pfilecdb.ora
+-rw-r----- 1 oracle oracle 4608 Nov 30  2020 spfiletestP.ora
+-rw-rw-r-- 1 oracle oracle    1 Nov 30  2020 bash_profile
+-rw-rw---- 1 oracle oracle 1544 Nov 30  2020 hc_testP.dat
+-rw-rw---- 1 oracle oracle   24 Dec  1  2020 lkCDB
+-rw-rw---- 1 oracle oracle 1544 Feb 11 06:27 hc_orcl.dat
+-rw-rw---- 1 oracle oracle 4608 Feb 11 06:27 spfileorcl.ora
+-rw-r----- 1 oracle oracle   24 Feb 11 07:27 lkTEST
+-rw-r----- 1 oracle oracle 2048 Feb 11 07:29 orapwTest1
+-rw-r----- 1 oracle oracle 3584 May 14 03:55 spfileTest1.ora
+-rw-rw-r-- 1 oracle oracle 1041 May 14 04:14 initTest1.ora
+-rw-rw---- 1 oracle oracle 1544 May 14 05:00 hc_Test1.dat
+-rw-rw-r-- 1 oracle oracle  661 Jul 16 03:17 initTEST.ora
+-rw-rw---- 1 oracle oracle 1544 Jul 16 03:23 hc_TEST.dat
+-rw-r----- 1 oracle oracle 6144 Jul 16 03:41 orapwTEST
+[root@node9 dbs]#
+[root@node9 dbs]#
+[root@node9 dbs]#
+[root@node9 dbs]# su - oracle
+Last login: Sun Jul 16 03:30:34 EDT 2023 on pts/1
+[oracle@node9 ~]$
+[oracle@node9 ~]$
+[oracle@node9 ~]$
+[oracle@node9 ~]$ cd $ORACLE_HOME/network/admin
+[oracle@node9 admin]$
+[oracle@node9 admin]$
+[oracle@node9 admin]$
+[oracle@node9 admin]$ vi listener.ora
+[oracle@node9 admin]$
+[oracle@node9 admin]$
+[oracle@node9 admin]$ cat listener
+cat: listener: No such file or directory
+[oracle@node9 admin]$ cat listener.ora
+LISTENER_T =
+(DESCRIPTION_LIST=
+  (DESCRIPTION =
+       (ADDRESS = (PROTOCOL = TCP)(HOST = NODE9)(PORT = 1621))
+ )
+)
+SID_LIST_LISTENER_T =
+   (SID_LIST=
+       (SID_DESC=
+          (SID_NAME=TEST)
+          (ORACLE_HOME=/orab/app/12.2/dbhome)
+         )
+        )
+
+
+[oracle@node9 admin]$ lsnrctl start LISTENER_T
+
+LSNRCTL for Linux: Version 19.0.0.0.0 - Production on 16-JUL-2023 03:44:35
+
+Copyright (c) 1991, 2020, Oracle.  All rights reserved.
+
+Starting /oradata/app/oracle/product/19c/dbhome/bin/tnslsnr: please wait...
+
+TNSLSNR for Linux: Version 19.0.0.0.0 - Production
+System parameter file is /oradata/app/oracle/product/19c/dbhome/network/admin/listener.ora
+Log messages written to /oradata/app/oracle/diag/tnslsnr/node9/listener_t/alert/log.xml
+Listening on: (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=node9)(PORT=1621)))
+TNS-01201: Listener cannot find executable /orab/app/12.2/dbhome/bin/oracle for SID TEST
+
+Listener failed to start. See the error message(s) above...
+
+[oracle@node9 admin]$ PWD
+-bash: PWD: command not found
+[oracle@node9 admin]$ pwd
+/oradata/app/oracle/product/19c/dbhome/network/admin
+[oracle@node9 admin]$
+[oracle@node9 admin]$
+[oracle@node9 admin]$ vi listener.ora
+[oracle@node9 admin]$
+[oracle@node9 admin]$
+[oracle@node9 admin]$
+[oracle@node9 admin]$ lsnrctl start LISTENER_T
+
+LSNRCTL for Linux: Version 19.0.0.0.0 - Production on 16-JUL-2023 03:45:26
+
+Copyright (c) 1991, 2020, Oracle.  All rights reserved.
+
+Starting /oradata/app/oracle/product/19c/dbhome/bin/tnslsnr: please wait...
+
+TNSLSNR for Linux: Version 19.0.0.0.0 - Production
+System parameter file is /oradata/app/oracle/product/19c/dbhome/network/admin/listener.ora
+Log messages written to /oradata/app/oracle/diag/tnslsnr/node9/listener_t/alert/log.xml
+Listening on: (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=node9)(PORT=1621)))
+
+Connecting to (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=NODE9)(PORT=1621)))
+STATUS of the LISTENER
+------------------------
+Alias                     LISTENER_T
+Version                   TNSLSNR for Linux: Version 19.0.0.0.0 - Production
+Start Date                16-JUL-2023 03:45:26
+Uptime                    0 days 0 hr. 0 min. 0 sec
+Trace Level               off
+Security                  ON: Local OS Authentication
+SNMP                      OFF
+Listener Parameter File   /oradata/app/oracle/product/19c/dbhome/network/admin/listener.ora
+Listener Log File         /oradata/app/oracle/diag/tnslsnr/node9/listener_t/alert/log.xml
+Listening Endpoints Summary...
+  (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=node9)(PORT=1621)))
+Services Summary...
+Service "TEST" has 1 instance(s).
+  Instance "TEST", status UNKNOWN, has 1 handler(s) for this service...
+The command completed successfully
+[oracle@node9 admin]$ ip r l
+default via 192.168.137.1 dev ens33  proto static  metric 100
+192.168.122.0/24 dev virbr0  proto kernel  scope link  src 192.168.122.1
+192.168.137.0/24 dev ens33  proto kernel  scope link  src 192.168.137.9  metric 100
+[oracle@node9 admin]$
+[oracle@node9 admin]$
+[oracle@node9 admin]$ vi tnsnames.ora
+[oracle@node9 admin]$
+[oracle@node9 admin]$
+[oracle@node9 admin]$
+[oracle@node9 admin]$ tnsping TEST_FC
+
+TNS Ping Utility for Linux: Version 19.0.0.0.0 - Production on 16-JUL-2023 03:51:53
+
+Copyright (c) 1997, 2020, Oracle.  All rights reserved.
+
+Used parameter files:
+/oradata/app/oracle/product/19c/dbhome/network/admin/sqlnet.ora
+
+
+Used TNSNAMES adapter to resolve the alias
+Attempting to contact (DESCRIPTION = (ADDRESS_LIST= (ADDRESS=(PROTOCOL=tcp)(HOST=192.168.137.9)(PORT=1621))) (CONNECT_DATA = (SID=TEST)))
+OK (10 msec)
+[oracle@node9 admin]$ tnsping TEST_FS
+
+TNS Ping Utility for Linux: Version 19.0.0.0.0 - Production on 16-JUL-2023 03:51:58
+
+Copyright (c) 1997, 2020, Oracle.  All rights reserved.
+
+Used parameter files:
+/oradata/app/oracle/product/19c/dbhome/network/admin/sqlnet.ora
+
+
+Used TNSNAMES adapter to resolve the alias
+Attempting to contact (DESCRIPTION = (ADDRESS_LIST= (ADDRESS=(PROTOCOL=tcp)(HOST=192.168.137.3)(PORT=1621))) (CONNECT_DATA = (SID=TEST)))
+OK (0 msec)
+[oracle@node9 admin]$
+[oracle@node9 admin]$
+[oracle@node9 admin]$ sqlplus / as sysdba
+
+SQL*Plus: Release 19.0.0.0.0 - Production on Sun Jul 16 03:57:48 2023
+Version 19.9.0.0.0
+
+Copyright (c) 1982, 2020, Oracle.  All rights reserved.
+
+Connected to an idle instance.
+
+SQL> exit
+Disconnected
+[oracle@node9 admin]$
+[oracle@node9 admin]$
+[oracle@node9 admin]$
+[oracle@node9 admin]$
+[oracle@node9 admin]$ export ORACLE_SID=TEST
+[oracle@node9 admin]$
+[oracle@node9 admin]$
+[oracle@node9 admin]$
+[oracle@node9 admin]$
+[oracle@node9 admin]$ sqlplus / as sysdba
+
+SQL*Plus: Release 19.0.0.0.0 - Production on Sun Jul 16 04:03:20 2023
+Version 19.9.0.0.0
+
+Copyright (c) 1982, 2020, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.9.0.0.0
+
+SQL>
+SQL>
+SQL>
+SQL>
+SQL> show parameter _2
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+db_2k_cache_size                     big integer 0
+db_32k_cache_size                    big integer 0
+db_create_online_log_dest_2          string
+dg_broker_config_file2               string      /oradata/app/oracle/product/19
+                                                 c/dbhome/dbs/dr2TEST.dat
+log_archive_dest_12                  string
+log_archive_dest_2                   string
+log_archive_dest_20                  string
+log_archive_dest_21                  string
+log_archive_dest_22                  string
+log_archive_dest_23                  string
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+log_archive_dest_24                  string
+log_archive_dest_25                  string
+log_archive_dest_26                  string
+log_archive_dest_27                  string
+log_archive_dest_28                  string
+log_archive_dest_29                  string
+log_archive_dest_state_12            string      enable
+log_archive_dest_state_2             string      enable
+log_archive_dest_state_20            string      enable
+log_archive_dest_state_21            string      enable
+log_archive_dest_state_22            string      enable
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+log_archive_dest_state_23            string      enable
+log_archive_dest_state_24            string      enable
+log_archive_dest_state_25            string      enable
+log_archive_dest_state_26            string      enable
+log_archive_dest_state_27            string      enable
+log_archive_dest_state_28            string      enable
+log_archive_dest_state_29            string      enable
+permit_92_wrap_format                boolean     TRUE
+plsql_v2_compatibility               boolean     FALSE
+sql92_security                       boolean     TRUE
+SQL> alter system set log_archive_dest_2='service=TEST_FS';
+
+System altered.
+
+SQL>
+SQL>
+SQL> alter system set log_archive_dest_state_2='DEFER';
+
+System altered.
+
+SQL> show parameter fal
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+fal_client                           string
+fal_server                           string
+SQL>
+SQL>
+SQL> alter system set fal_client='TEST_FC';
+
+System altered.
+
+SQL> alter system set fal_server='TEST_FS';
+
+System altered.
+
+SQL>
+SQL>
+SQL> select distinct process from gv$managed_standby;
+
+PROCESS
+---------
+ARCH
+DGRD
+RFS
+
+SQL> !tnsping TEST_FC
+
+TNS Ping Utility for Linux: Version 19.0.0.0.0 - Production on 16-JUL-2023 04:10:02
+
+Copyright (c) 1997, 2020, Oracle.  All rights reserved.
+
+Used parameter files:
+/oradata/app/oracle/product/19c/dbhome/network/admin/sqlnet.ora
+
+
+Used TNSNAMES adapter to resolve the alias
+Attempting to contact (DESCRIPTION = (ADDRESS_LIST= (ADDRESS=(PROTOCOL=tcp)(HOST=192.168.137.9)(PORT=1621))) (CONNECT_DATA = (SID=TEST)))
+OK (0 msec)
+
+SQL>
+SQL>
+SQL>
+SQL>
+SQL> alter database recover managed standy database disconnect from session;
+alter database recover managed standy database disconnect from session
+                               *
+ERROR at line 1:
+ORA-02000: missing STANDBY keyword
+
+
+SQL> alter database recover managed standby database disconnect from session;
+
+Database altered.
+
+SQL>  select distinct process from gv$managed_standby;
+
+PROCESS
+---------
+ARCH
+DGRD
+MRP0
+RFS
+
+SQL>
+SQL>
+SQL> select max(sequence#) from v$archived_log where applied='YES';
+
+MAX(SEQUENCE#)
+--------------
+            13
+
+SQL> /
+
+MAX(SEQUENCE#)
+--------------
+            15
+
+SQL>
+SQL>
+SQL> show parametert standby
+SP2-0158: unknown SHOW option "parametert"
+SP2-0158: unknown SHOW option "standby"
+SQL>
+SQL>
+SQL> show parameter standby
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+enabled_PDBs_on_standby              string      *
+standby_db_preserve_states           string      NONE
+standby_file_management              string      MANUAL
+standby_pdb_source_file_dblink       string
+standby_pdb_source_file_directory    string
+SQL>
+SQL> select member from v$log
+  2  ;
+select member from v$log
+       *
+ERROR at line 1:
+ORA-00904: "MEMBER": invalid identifier
+
+
+SQL> select member from v$logfile;
+
+MEMBER
+--------------------------------------------------------------------------------
+/orab/TEST/datafiles/TEST/redo03.log
+/orab/TEST/datafiles/TEST/redo02.log
+/orab/TEST/datafiles/TEST/redo01.log
+
+SQL> exit
+Disconnected from Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.9.0.0.0
+[oracle@node9 admin]$
+[oracle@node9 admin]$
+[oracle@node9 admin]$
+[oracle@node9 admin]$ ls -ld /orab/TEST/datafiles/TEST
+drwxrwxr-x 2 oracle oracle 169 Jul 16 03:32 /orab/TEST/datafiles/TEST
+[oracle@node9 admin]$ sqlplus / as sysdba
+
+SQL*Plus: Release 19.0.0.0.0 - Production on Sun Jul 16 04:21:23 2023
+Version 19.9.0.0.0
+
+Copyright (c) 1982, 2020, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.9.0.0.0
+
+SQL> alter system set standby_file_management='AUTO';
+
+System altered.
+
+SQL> show parameter standby
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+enabled_PDBs_on_standby              string      *
+standby_db_preserve_states           string      NONE
+standby_file_management              string      AUTO
+standby_pdb_source_file_dblink       string
+standby_pdb_source_file_directory    string
+SQL> alter system set standby_file_management='MANUAL';
+
+System altered.
+
+SQL> select file#,name from v$datafile
+  2  ;
+
+     FILE#
+----------
+NAME
+--------------------------------------------------------------------------------
+         1
+/orab/TEST/datafiles/TEST/system01.dbf
+
+         2
+/orab/TEST/datafiles/TEST/test_tbs1.dbf
+
+         3
+/orab/TEST/datafiles/TEST/sysaux01.dbf
+
+
+     FILE#
+----------
+NAME
+--------------------------------------------------------------------------------
+         4
+/orab/TEST/datafiles/TEST/undotbs01.dbf
+
+         5
+/orab/TEST/datafiles/TEST/test_tbs.dbf
+
+         7
+/orab/TEST/datafiles/TEST/users01.dbf
+
+
+     FILE#
+----------
+NAME
+--------------------------------------------------------------------------------
+         8
+/orab/TEST/datafiles/TEST/test_tbs2.dbf
+
+         9
+/oradata/app/oracle/product/19c/dbhome/dbs/UNNAMED00009
+
+
+8 rows selected.
+
+SQL> col name for a75
+SQL>
+SQL> set lines 200 pages 300
+SQL>
+SQL> /
+
+     FILE# NAME
+---------- ---------------------------------------------------------------------------
+         1 /orab/TEST/datafiles/TEST/system01.dbf
+         2 /orab/TEST/datafiles/TEST/test_tbs1.dbf
+         3 /orab/TEST/datafiles/TEST/sysaux01.dbf
+         4 /orab/TEST/datafiles/TEST/undotbs01.dbf
+         5 /orab/TEST/datafiles/TEST/test_tbs.dbf
+         7 /orab/TEST/datafiles/TEST/users01.dbf
+         8 /orab/TEST/datafiles/TEST/test_tbs2.dbf
+         9 /oradata/app/oracle/product/19c/dbhome/dbs/UNNAMED00009
+
+8 rows selected.
+
+SQL> l
+  1  select file#,name from v$datafile
+  2*
+SQL>
+SQL>
+SQL>
+SQL>
+SQL> alter database create datafile '/oradata/app/oracle/product/19c/dbhome/dbs/UNNAMED00009' as '/orab/TEST/datafiles/TEST/test_tbs3.dbf';
+
+Database altered.
+
+SQL> select file#,name from v$datafile
+  2  ;
+
+     FILE# NAME
+---------- ---------------------------------------------------------------------------
+         1 /orab/TEST/datafiles/TEST/system01.dbf
+         2 /orab/TEST/datafiles/TEST/test_tbs1.dbf
+         3 /orab/TEST/datafiles/TEST/sysaux01.dbf
+         4 /orab/TEST/datafiles/TEST/undotbs01.dbf
+         5 /orab/TEST/datafiles/TEST/test_tbs.dbf
+         7 /orab/TEST/datafiles/TEST/users01.dbf
+         8 /orab/TEST/datafiles/TEST/test_tbs2.dbf
+         9 /orab/TEST/datafiles/TEST/test_tbs3.dbf
+
+8 rows selected.
+
+SQL> show parameter standby
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+enabled_PDBs_on_standby              string      *
+standby_db_preserve_states           string      NONE
+standby_file_management              string      MANUAL
+standby_pdb_source_file_dblink       string
+standby_pdb_source_file_directory    string
+SQL>
+SQL>
+SQL> alter system set standby_file_management='AUTO';
+
+System altered.
+
+SQL>
+SQL>
+SQL> select distinct process from v$managed_standby;
+
+PROCESS
+---------
+ARCH
+DGRD
+RFS
+
+SQL>
+SQL>
+SQL> alter database recover managed standby database disconnect;
+
+Database altered.
+
+SQL>
+SQL>
+SQL> select member from v$logfile;
+
+MEMBER
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/orab/TEST/datafiles/TEST/redo03.log
+/orab/TEST/datafiles/TEST/redo02.log
+/orab/TEST/datafiles/TEST/redo01.log
+
+SQL> !ls -ld /orab/TEST/datafiles/TEST
+drwxrwxr-x 2 oracle oracle 211 Jul 16 04:30 /orab/TEST/datafiles/TEST
+
+SQL> !ls -lrt /oradata/app/oracle/product/19c/dbhome/dbs/UNNAMED00009
+ls: cannot access /oradata/app/oracle/product/19c/dbhome/dbs/UNNAMED00009: No such file or directory
+
+SQL>
+SQL>
+SQL>
+SQL>
+SQL>
+SQL> select file#,name from v$datafile;
+
+     FILE# NAME
+---------- ---------------------------------------------------------------------------
+         1 /orab/TEST/datafiles/TEST/system01.dbf
+         2 /orab/TEST/datafiles/TEST/test_tbs1.dbf
+         3 /orab/TEST/datafiles/TEST/sysaux01.dbf
+         4 /orab/TEST/datafiles/TEST/undotbs01.dbf
+         5 /orab/TEST/datafiles/TEST/test_tbs.dbf
+         7 /orab/TEST/datafiles/TEST/users01.dbf
+         8 /orab/TEST/datafiles/TEST/test_tbs2.dbf
+         9 /orab/TEST/datafiles/TEST/test_tbs3.dbf
+
+8 rows selected.
+
+SQL> /
+
+     FILE# NAME
+---------- ---------------------------------------------------------------------------
+         1 /orab/TEST/datafiles/TEST/system01.dbf
+         2 /orab/TEST/datafiles/TEST/test_tbs1.dbf
+         3 /orab/TEST/datafiles/TEST/sysaux01.dbf
+         4 /orab/TEST/datafiles/TEST/undotbs01.dbf
+         5 /orab/TEST/datafiles/TEST/test_tbs.dbf
+         7 /orab/TEST/datafiles/TEST/users01.dbf
+         8 /orab/TEST/datafiles/TEST/test_tbs2.dbf
+         9 /orab/TEST/datafiles/TEST/test_tbs3.dbf
+        10 /orab/TEST/datafiles/TEST/NEW/test_tbs4.dbf
+
+9 rows selected.
+
+SQL>
+SQL>
+SQL> exit
+Disconnected from Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.9.0.0.0
+[oracle@node9 admin]$
+[oracle@node9 admin]$
+[oracle@node9 admin]$ cd /orab/TEST/datafiles/TEST
+[oracle@node9 TEST]$
+[oracle@node9 TEST]$
+[oracle@node9 TEST]$ ls -lrt
+total 1895712
+drwxr-x--- 2 oracle oracle        27 Jul 16 04:43 NEW
+-rw-rw---- 1 oracle oracle   2105344 Jul 16 04:43 test_tbs1.dbf
+-rw-rw---- 1 oracle oracle 943726592 Jul 16 04:43 system01.dbf
+-rw-rw---- 1 oracle oracle 608182272 Jul 16 04:43 sysaux01.dbf
+-rw-rw---- 1 oracle oracle   5251072 Jul 16 04:43 users01.dbf
+-rw-rw---- 1 oracle oracle 356524032 Jul 16 04:43 undotbs01.dbf
+-rw-rw---- 1 oracle oracle   2105344 Jul 16 04:43 test_tbs.dbf
+-rw-rw---- 1 oracle oracle   1056768 Jul 16 04:43 test_tbs3.dbf
+-rw-rw---- 1 oracle oracle   1056768 Jul 16 04:43 test_tbs2.dbf
+-rw-rw---- 1 oracle oracle  10600448 Jul 16 04:44 control01.ctl
+-rw-rw---- 1 oracle oracle  10600448 Jul 16 04:44 control02.ctl
+[oracle@node9 TEST]$ cd NEW
+[oracle@node9 NEW]$
+[oracle@node9 NEW]$
+[oracle@node9 NEW]$
+[oracle@node9 NEW]$ ls -lrt
+total 1032
+-rw-rw---- 1 oracle oracle 1056768 Jul 16 04:43 test_tbs4.dbf
+[oracle@node9 NEW]$ date
+Sun Jul 16 04:44:26 EDT 2023
+[oracle@node9 NEW]$
