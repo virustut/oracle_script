@@ -125,6 +125,37 @@ select * from employee where id > 5000 and id >6000 and id > 7000; -- if all con
 select * from employee where date between '20250901' and '20250926'
 
 
+--- How Null value treated in oracle database 
+select * from employee where name is null; -- note  : null value is not equal to zero , zero has some value 
+
+---- Order by clause in oracle 
+
+select * from employee  order by id desc ;
+
+--- Types of function in Oracle SQL 
+
+Character() , Number() , date() , Conversion() , Aggregate()
+
+-- Date function 
+sysdate , last day , next_day , months_between , Add_months , Trunc_date
+
+
+-- conversion function 
+To_char , To_Date , To_Number 
+
+-- Aggregate function 
+Sum , minimum , maximum , count , average ,standard deviation , variance 
+
+--- Convert text upper case to lower case 
+-- character function 
+Lower , upper , concat ,trim ,substring , Ltrim , Rtrim ,Length , Replace , InString , ASCII , RPAD , LPAD , Translate ;
+
+
+--- lower 
+select LOWERE('RAKESH') FROM EMPPLOYEE;
+
+--- UPPER 
+select UPPER('ramesh') from employee;
 
 
 
