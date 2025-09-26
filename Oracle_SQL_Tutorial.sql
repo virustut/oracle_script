@@ -71,6 +71,8 @@ update employee set name ='Rana Tunga' where id=1;
 
 --- How to use a commit and rollback 
 
+--- Note:- it is use to save changes made by DML Statements
+
 
 
 
