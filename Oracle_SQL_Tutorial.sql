@@ -102,7 +102,27 @@ select * From employee where name like '%ki' and lastname like '%yad';
 
 select * from employee where id in (10,20,30,40);
 
+--- Concat the two or more column /string using concatenation operator 
 
+ex :- select name , salary from employee;
+using concatination operator 
+
+select 'Agent anme ' || name , || 'salary is : '|| salary from employee;
+
+--- Any operator in oracle database
+select name  from employee where column > any(val1,val2,val3)
+                OR
+
+select * from employee where salary > 5000 or salary >6000 or salary > 7000;
+
+--- All comparision operator in sql server 
+select name  from employee where id > all(12,24,25,87,38);
+                 OR 
+select * from employee where id > 5000 and id >6000 and id > 7000; -- if all condition true then return true otherwise false 
+
+
+--- Between operator 
+select * from employee where date between '20250901' and '20250926'
 
 
 
