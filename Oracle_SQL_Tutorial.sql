@@ -72,6 +72,39 @@ update employee set name ='Rana Tunga' where id=1;
 --- How to use a commit and rollback 
 
 --- Note:- it is use to save changes made by DML Statements
+Note : rollback will do everything undo till last commit not in between 
+
+--- How our sql qeury work internally 
+select * from employee where eid=10;
+
+--- Logical operator 
+
+AND , OR , NOT 
+---- Arithmatic operator
+Addition , substraction , Multiplication , division
+
+--- Comparision operator 
+
+= equal
+!= not equal
+<> not equal
+>  greater than 
+<  less than
+>= greater than equal to 
+<= less than equal to
+
+--- Like operator 
+select * from employee where name like 'Ki%'; or '%cy' end with cy or '%st%' 
+
+select * From employee where name like '%ki' and lastname like '%yad';
+
+--- IN operator 
+
+select * from employee where id in (10,20,30,40);
+
+
+
+
 
 
 
