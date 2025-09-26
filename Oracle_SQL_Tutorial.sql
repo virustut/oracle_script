@@ -158,6 +158,15 @@ select LOWERE('RAKESH') FROM EMPPLOYEE;
 select UPPER('ramesh') from employee;
 
 
+--- INIT CAP function 
+select INITCAP(Last_name)  from employee where employee_id =100;  --- it returns the first character is upper case of a column 
+
+---Concatination Function
+
+-- join two column using concatination function 
+select first_name ,last_name from employee;
+
+
 
 
 
